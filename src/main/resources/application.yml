@@ -1,0 +1,12 @@
+spring:
+#  mvc:
+#    favicon:
+#      enabled: false
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://ls-ea5c0d0629a8cc8a80428da3902f9351759ae363.cemxsedh0w8x.ap-northeast-2.rds.amazonaws.com"
+    port: 3306
+    username: "admin"
+    password: "]or`$>P5Q+,M=gpPpU.QgI,{an``e7c3"
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
