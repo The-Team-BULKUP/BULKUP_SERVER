@@ -6,10 +6,10 @@
       public class reservation
       public class Reservation
       ```
-- 테스트 클래스는 'Test’로 끝남
+- 테스트 클래스는 'Tests’로 끝남
     - 예시
     - ```JAVA
-        public class WatcherTest {
+        public class WatcherTests {
       ```
 - 메서드 이름에 소문자 카멜표기법 적용
     - 예시
