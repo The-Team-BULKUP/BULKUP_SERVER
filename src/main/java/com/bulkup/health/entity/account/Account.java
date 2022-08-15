@@ -22,8 +22,8 @@ public abstract class Account {
     @Column(name = "role", length = 10)
     private String role;
 
-    @Column(name = "introudce", length = 300)
-    private String introudce;
+    @Column(name = "introduce", length = 300)
+    private String introduce;
 
     public Long getId() {
         return id;
