@@ -1,5 +1,8 @@
 package com.bulkup.health.entity.account;
 
+import com.bulkup.health.config.spring_security.SecurityRole;
+import com.bulkup.health.config.spring_security.SecurityRoleConverter;
+
 import javax.persistence.*;
 
 @Entity
@@ -18,9 +21,9 @@ public abstract class Account {
 
     @Column(name = "real_name", nullable = false, length = 10)
     private String realName;
-
     @Column(name = "role", length = 10)
-    private String role;
+    @Convert(converter = SecurityRoleConverter.class)
+    private SecurityRole role;
 
     @Column(name = "introduce", length = 300)
     private String introduce;
