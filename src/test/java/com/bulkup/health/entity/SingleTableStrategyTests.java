@@ -1,5 +1,6 @@
 package com.bulkup.health.entity;
 
+import com.bulkup.health.config.spring_security.SecurityRole;
 import com.bulkup.health.entity.account.Trainer;
 import com.bulkup.health.entity.account.User;
 import com.bulkup.health.entity.party.PartyAlone;
@@ -15,7 +16,7 @@ public class SingleTableStrategyTests {
         //when
         String discriminatorValue = trainer.getDiscriminatorValue();
         //then
-        assert discriminatorValue.equals("ROLE_TRAINER");
+        assert discriminatorValue.equals(SecurityRole.TRAINER.toString());
     }
 
     @Test
@@ -25,7 +26,7 @@ public class SingleTableStrategyTests {
         //when
         String discriminatorValue = user.getDiscriminatorValue();
         //then
-        assert discriminatorValue.equals("ROLE_USER");
+        assert discriminatorValue.equals(SecurityRole.USER.toString());
     }
 
     @Test
