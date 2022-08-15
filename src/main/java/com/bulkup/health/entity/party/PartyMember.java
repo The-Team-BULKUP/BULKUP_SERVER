@@ -1,15 +1,13 @@
 package com.bulkup.health.entity.party;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "Party_member")
+@Table(name = "Party_member", schema = "bulkup")
 public class PartyMember {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "crew_id", nullable = false)

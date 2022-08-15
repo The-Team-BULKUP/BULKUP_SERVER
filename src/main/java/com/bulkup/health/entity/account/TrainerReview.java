@@ -4,15 +4,15 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
-@MappedSuperclass
-@Table(name = "Trainer_review")
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "Trainer_review", schema = "bulkup")
 public class TrainerReview {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "trainer_id", nullable = false)
@@ -29,5 +29,5 @@ public class TrainerReview {
 
     @CreatedDate
     @Column(name = "create_at", nullable = false)
-    private Instant createAt;
+    private LocalDateTime createAt;
 }

@@ -1,18 +1,27 @@
 package com.bulkup.health.entity.party;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
 import javax.persistence.*;
 import java.time.Instant;
 
+@Getter
 @Entity
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @DiscriminatorColumn(
         name = "party_type",
         discriminatorType = DiscriminatorType.STRING,
-        columnDefinition = "VARCHAR(5)"
-)
-@Inheritance(strategy = InheritanceType.JOINED) // 조인전략
+        columnDefinition = "VARCHAR(5)")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Party {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name", nullable = false, length = 30)

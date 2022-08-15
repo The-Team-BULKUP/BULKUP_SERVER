@@ -1,13 +1,23 @@
 package com.bulkup.health.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+
+//todo: 아직 미완
+@Getter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "Chat", schema = "bulkup")
 public class Chat {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name")
@@ -21,45 +31,4 @@ public class Chat {
 
     @Column(name = "text_message", length = 100)
     private String textMessage;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getName() {
-        return name;
-    }
-
-    public void setName(Integer name) {
-        this.name = name;
-    }
-
-    public Long getCrewId() {
-        return crewId;
-    }
-
-    public void setCrewId(Long crewId) {
-        this.crewId = crewId;
-    }
-
-    public String getTypeMessage() {
-        return typeMessage;
-    }
-
-    public void setTypeMessage(String typeMessage) {
-        this.typeMessage = typeMessage;
-    }
-
-    public String getTextMessage() {
-        return textMessage;
-    }
-
-    public void setTextMessage(String textMessage) {
-        this.textMessage = textMessage;
-    }
-
 }

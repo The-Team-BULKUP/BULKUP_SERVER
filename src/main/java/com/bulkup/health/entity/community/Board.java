@@ -1,18 +1,23 @@
 package com.bulkup.health.entity.community;
 
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.List;
 
+@Getter
 @Entity
-@MappedSuperclass
+@Table(name = "Board", schema = "bulkup")
 @EntityListeners(AuditingEntityListener.class)
 public class Board {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "writer", nullable = false)
@@ -30,6 +35,9 @@ public class Board {
 
     @LastModifiedDate
     @Column(name = "modify_at")
-    private Instant modifyAt;
+    private LocalDateTime modifyAt;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "board_id")
+    private List<Comment> comments;
 }
