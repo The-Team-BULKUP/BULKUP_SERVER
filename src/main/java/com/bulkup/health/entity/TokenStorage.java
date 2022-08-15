@@ -12,10 +12,10 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
-@RedisHash("TokenStorage")
-@Builder
 @Getter
+@Builder
 @ToString
+@RedisHash("TokenStorage")
 public class TokenStorage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
