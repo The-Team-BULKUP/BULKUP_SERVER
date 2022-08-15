@@ -4,7 +4,11 @@ import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
-@DiscriminatorColumn(name = "dtype")
+@DiscriminatorColumn(
+        name = "party_type",
+        discriminatorType = DiscriminatorType.STRING,
+        columnDefinition = "VARCHAR(5)"
+)
 @Inheritance(strategy = InheritanceType.JOINED) // 조인전략
 public abstract class Party {
     @Id

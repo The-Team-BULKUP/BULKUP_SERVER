@@ -6,7 +6,11 @@ import com.bulkup.health.config.spring_security.SecurityRoleConverter;
 import javax.persistence.*;
 
 @Entity
-@DiscriminatorColumn(name = "role")
+@DiscriminatorColumn(
+        name = "role",
+        discriminatorType = DiscriminatorType.STRING,
+        columnDefinition = "VARCHAR(15)"
+)
 @Inheritance(strategy = InheritanceType.JOINED) // 조인전략
 public abstract class Account {
     @Id

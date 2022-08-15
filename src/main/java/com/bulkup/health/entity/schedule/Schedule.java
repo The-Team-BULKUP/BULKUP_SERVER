@@ -4,7 +4,11 @@ import javax.persistence.*;
 import java.util.BitSet;
 
 @Entity
-@DiscriminatorColumn(name = "dtype")
+@DiscriminatorColumn(
+        name = "schedule_type",
+        discriminatorType = DiscriminatorType.STRING,
+        columnDefinition = "VARCHAR(10)"
+)
 @Inheritance(strategy = InheritanceType.JOINED) // 조인전략
 public class Schedule {
     @Id
