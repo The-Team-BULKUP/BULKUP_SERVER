@@ -44,4 +44,10 @@ public abstract class Party {
     @Column(name = "create_at", nullable = false)
     private Instant createAt;
 
+    @Transient
+    public String getDiscriminatorValue(){
+        //for tests
+        DiscriminatorValue val = this.getClass().getAnnotation(DiscriminatorValue.class);
+        return val == null ? null : val.value();
+    }
 }

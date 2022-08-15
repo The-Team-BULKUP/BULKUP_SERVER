@@ -17,4 +17,10 @@ public class Schedule {
     @Column(name = "time", nullable = false)
     private BitSet time;
 
+    @Transient
+    public String getDiscriminatorValue(){
+        //for tests
+        DiscriminatorValue val = this.getClass().getAnnotation(DiscriminatorValue.class);
+        return val == null ? null : val.value();
+    }
 }

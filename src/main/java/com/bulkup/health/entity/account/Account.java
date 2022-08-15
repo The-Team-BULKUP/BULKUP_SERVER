@@ -28,4 +28,11 @@ public abstract class Account {
     public Long getId() {
         return id;
     }
+
+    @Transient
+    public String getDiscriminatorValue(){
+        //for tests
+        DiscriminatorValue val = this.getClass().getAnnotation(DiscriminatorValue.class);
+        return val == null ? null : val.value();
+    }
 }
