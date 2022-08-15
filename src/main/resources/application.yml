@@ -8,7 +8,17 @@ spring:
     port: 3306
     username: "admin"
     password: "]or`$>P5Q+,M=gpPpU.QgI,{an``e7c3"
+  redis:
+    host: 15.165.86.75
+    port: 6379
+    password: penekhunCTFJserver!@!@
     #todo: DB?? ??? ?? ?? ?? ?? ??? ??
     #todo: ?? ??? ????? ??? ?? ????? ??. -hun
   jpa:
     database-platform: org.hibernate.dialect.MySQL5Dialect
+
+jwt:
+  header: Authorization
+  secret: VkZ2ODNoZGlqY25TUHBjamM0ODI5Mzg1N3ZBU0MzRGNNWjljODQ5MkFsQzBzOVhYWmM4c1BFMk4yS2tra0RTYVlJU0YyMWNzUQ
+  token-validity-in-seconds: 1800 # 30?
+  refresh-token-validity-in-seconds: 10800 # 3??
