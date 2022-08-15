@@ -53,3 +53,45 @@
             }
         }
       ```
+
+
+예외처리
+- 모든 예외는 CustomException으로 처리합니다.
+  - 예시
+  - ```JAVA
+    public void signup(ReqestDto req) {
+        // 회원 중복 검사 ( 아이디, 핸드폰 )
+        accountRepository.findByUsername(req.getUsername())
+                .ifPresent(m -> {
+                    throw new CustomException(ErrorCode.USERNAME_DUPLICATION);
+                });
+        .....
+  ```  
+  
+Transaction 처리
+- 클래스 레벨에서 ReadOnly 속성을 추가합니다.
+    - 예시
+    - ```JAVA
+        @Transaction(readOnly = true)
+        public class Reservation {
+      
+            public void reserve() {
+                // ...
+            }
+        }
+      ```
+- 수정이 필요한 메서드에선 ReadOnly = false로 오버라이트합니다.
+  - 예시
+  - ```JAVA
+    @Transactional
+    public void signup(ReqestDto req) {
+        // 회원 중복 검사 ( 아이디, 핸드폰 )
+        accountRepository.findByUsername(req.getUsername())
+                .ifPresent(m -> {
+                    throw new CustomException(ErrorCode.USERNAME_DUPLICATION);
+                });
+        .....
+  ```
+  
+
+...
