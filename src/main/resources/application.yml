@@ -4,7 +4,7 @@ spring:
 #      enabled: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://ls-ea5c0d0629a8cc8a80428da3902f9351759ae363.cemxsedh0w8x.ap-northeast-2.rds.amazonaws.com"
+    url: "jdbc:mysql://ls-ea5c0d0629a8cc8a80428da3902f9351759ae363.cemxsedh0w8x.ap-northeast-2.rds.amazonaws.com/bulkup"
     port: 3306
     username: "admin"
     password: "]or`$>P5Q+,M=gpPpU.QgI,{an``e7c3"
@@ -16,10 +16,17 @@ spring:
     #todo: 코드 분석툴에 무조건 걸릴듯 - hun
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5Dialect
+    #database-platform: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
 
 jwt:
   header: Authorization
   secret: VkZ2ODNoZGlqY25TUHBjamM0ODI5Mzg1N3ZBU0MzRGNNWjljODQ5MkFsQzBzOVhYWmM4c1BFMk4yS2tra0RTYVlJU0YyMWNzUQ
   token-validity-in-seconds: 1800 # 30?
   refresh-token-validity-in-seconds: 10800 # 3??
+
+#logging:
+#  level:
+#    root: DEBUG
