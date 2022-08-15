@@ -12,12 +12,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-@RequiredArgsConstructor
-@Configuration
-@EnableRedisRepositories
 @Slf4j
+@Configuration
+@RequiredArgsConstructor
+@EnableRedisRepositories(basePackages="com.bulkup.health.repository.redis")
 public class RedisRepositoryConfig {
-
     private final RedisProperties redisProperties;
 
     @Bean

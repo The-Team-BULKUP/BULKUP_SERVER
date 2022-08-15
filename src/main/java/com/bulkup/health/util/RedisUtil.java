@@ -1,7 +1,7 @@
 package com.bulkup.health.util;
 
 import com.bulkup.health.entity.TokenStorage;
-import com.bulkup.health.repository.TokenStorageRepository;
+import com.bulkup.health.repository.redis.TokenStorageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.bulkup.health.repository;
+package com.bulkup.health.repository.redis;
 
 import com.bulkup.health.entity.TokenStorage;
 import org.springframework.data.repository.CrudRepository;

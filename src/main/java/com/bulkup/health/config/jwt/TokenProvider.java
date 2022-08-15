@@ -1,7 +1,7 @@
 package com.bulkup.health.config.jwt;
 
 import com.bulkup.health.entity.TokenStorage;
-import com.bulkup.health.repository.TokenStorageRepository;
+import com.bulkup.health.repository.redis.TokenStorageRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -72,7 +72,7 @@ public class TokenProvider implements InitializingBean {
         return Jwts.builder()
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + refreshTokenValidityInMilliseconds))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -90,7 +90,6 @@ public class TokenProvider implements InitializingBean {
     }
 
     public boolean validateToken(String accessToken) {
-        //todo: try catch 미사용 방향으로 리팩터링
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken);
             Optional<TokenStorage> token = tokenStorageRepository.findByAccessToken(accessToken);
