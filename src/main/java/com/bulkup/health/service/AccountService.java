@@ -11,6 +11,7 @@ import com.bulkup.health.entity.account.User;
 import com.bulkup.health.repository.account.AccountRepository;
 import com.bulkup.health.repository.account.TrainerRepository;
 import com.bulkup.health.repository.account.UserRepository;
+import com.bulkup.health.repository.redis.TokenStorageRepository;
 import com.bulkup.health.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final TrainerRepository trainerRepository;
     private final UserRepository userRepository;
+    private final TokenStorageRepository tokenStorageRepository;
     @Transactional
     public AccountDto.Response.SignupTRAINER signupTrainer(AccountDto.Request.SignupTRAINER req) {
         // 회원 중복 검사 ( 아이디, 핸드폰 )
@@ -111,5 +113,35 @@ public class AccountService {
                 .build();
         redisUtil.insertTokenToStorage(account.getUsername(), tokenStorageEntity);
         return new AccountDto.Response.Token(accessToken, tokenExpired, refreshToken);
+    }
+
+    @Transactional
+    public AccountDto.Response.Token reissue(String oldAccessToken, String oldRefreshToken){
+        log.info("reissue oldAccessToken: {}", oldAccessToken);
+        log.info("reissue oldRefreshToken: {}", oldRefreshToken);
+        TokenStorage findAccessToken = tokenStorageRepository.findByAccessToken(oldAccessToken)
+                .orElseThrow(() -> new CustomException(ErrorCode.DOESNT_EXIST_TOKEN));
+        String username = findAccessToken.getUsername();
+        log.info("reissue username : {}", username);
+
+        if (username == null)
+            throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
+        //refresh 토큰 비교
+        if (!findAccessToken.getRefreshToken().equals(oldRefreshToken))
+            throw new CustomException(ErrorCode.UNCHECKED_ERROR);
+
+        Map<String, String> jwt = tokenProvider.createToken(username);
+        String newAccessToken = jwt.get("token");
+        String tokenExpired = jwt.get("tokenExpired");
+        String newRefreshToken = tokenProvider.createRefreshToken();
+
+        TokenStorage tokenStorageEntity = TokenStorage.builder()
+                .refreshToken(newRefreshToken)
+                .accessToken(newAccessToken)
+                .username(username)
+                .build();
+
+        redisUtil.insertTokenToStorage(username, tokenStorageEntity);
+        return new AccountDto.Response.Token(newAccessToken, tokenExpired, newRefreshToken);
     }
 }
