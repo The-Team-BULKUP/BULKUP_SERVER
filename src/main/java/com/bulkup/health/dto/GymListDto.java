@@ -1,16 +1,19 @@
 package com.bulkup.health.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.util.List;
 
-public abstract class GymListDto {
+@Getter
+public class GymListDto {
 
     @JsonProperty("result")
     private Result result;
     @JsonProperty("code")
     private int code;
 
+    @Getter
     public static class Result {
         @JsonProperty("total")
         private int total;
@@ -20,6 +23,7 @@ public abstract class GymListDto {
         private List<String> promotionalCenterList;
     }
 
+    @Getter
     public static class CenterList {
         @JsonProperty("dagymProgramList")
         private List<String> dagymProgramList;
