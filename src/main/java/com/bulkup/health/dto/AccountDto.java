@@ -30,15 +30,6 @@ public class AccountDto {
             private String password;
             private String realName;
             private String nickname;
-
-            public static SignupUSER of(User user){
-                SignupUSER signupUSER = new SignupUSER();
-                signupUSER.username = user.getUsername();
-                signupUSER.password = user.getPassword();
-                signupUSER.realName = user.getRealName();
-                signupUSER.nickname = user.getNickname();
-                return signupUSER;
-            }
         }
 
         @Data
@@ -50,17 +41,6 @@ public class AccountDto {
             private int price_per;
             private String gym_code;
             private String introduce;
-
-            public static SignupTRAINER of(Trainer trainer){
-                SignupTRAINER dto = new SignupTRAINER();
-                dto.username = trainer.getUsername();
-                dto.password = trainer.getPassword();
-                dto.realName = trainer.getRealName();
-                dto.price_per = trainer.getPricePer();
-                dto.gym_code = trainer.getGymCode();
-                dto.introduce = trainer.getIntroduce();
-                return dto;
-            }
         }
     }
 

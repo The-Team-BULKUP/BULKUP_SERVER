@@ -3,11 +3,9 @@ package com.bulkup.health.controller;
 import com.bulkup.health.dto.AccountDto;
 import com.bulkup.health.service.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,13 +24,15 @@ public class AccountController {
     }
 
     @PostMapping("/signup/trainer")
-    public AccountDto.Response.SignupTRAINER signupTrainerMapping(@Validated AccountDto.Request.SignupTRAINER req) {
-        return accountService.signupTrainer(req);
+    @ResponseStatus(HttpStatus.CREATED)
+    public void signupTrainerMapping(@Validated AccountDto.Request.SignupTRAINER req) {
+        accountService.signupTrainer(req);
     }
 
     @PostMapping("/signup/user")
-    public AccountDto.Response.SignupUSER signupUserMapping(@Validated AccountDto.Request.SignupUSER req) {
-        return accountService.signupUser(req);
+    @ResponseStatus(HttpStatus.CREATED)
+    public void signupUserMapping(@Validated AccountDto.Request.SignupUSER req) {
+        accountService.signupUser(req);
     }
 
     @PostMapping("/reissue")

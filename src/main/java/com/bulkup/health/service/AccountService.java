@@ -7,8 +7,6 @@ import com.bulkup.health.config.spring_security.SecurityRole;
 import com.bulkup.health.dto.AccountDto;
 import com.bulkup.health.entity.TokenStorage;
 import com.bulkup.health.entity.account.Account;
-import com.bulkup.health.entity.account.Trainer;
-import com.bulkup.health.entity.account.User;
 import com.bulkup.health.repository.account.AccountRepository;
 import com.bulkup.health.repository.account.TrainerRepository;
 import com.bulkup.health.repository.account.UserRepository;
@@ -41,7 +39,7 @@ public class AccountService {
     private final UserRepository userRepository;
     private final TokenStorageRepository tokenStorageRepository;
     @Transactional
-    public AccountDto.Response.SignupTRAINER signupTrainer(AccountDto.Request.SignupTRAINER req) {
+    public void signupTrainer(AccountDto.Request.SignupTRAINER req) {
         // 회원 중복 검사 ( 아이디, 핸드폰 )
         accountRepository.findByUsername(req.getUsername())
                 .ifPresent(m -> {
@@ -58,12 +56,11 @@ public class AccountService {
         req.setPassword(encodedPassword);
 
         // 회원 저장
-        Trainer trainer = trainerRepository.save(req.toEntity());
-        return AccountDto.Response.SignupTRAINER.of(trainer);
+        trainerRepository.save(req.toEntity());
     }
 
     @Transactional
-    public AccountDto.Response.SignupUSER signupUser(AccountDto.Request.SignupUSER req) {
+    public void signupUser(AccountDto.Request.SignupUSER req) {
         // 회원 중복 검사 (아이디, 핸드폰, 닉네임)
         accountRepository.findByUsername(req.getUsername())
                 .ifPresent(m -> {
@@ -84,8 +81,7 @@ public class AccountService {
         req.setPassword(encodedPassword);
 
         // 회원 저장
-        User user = userRepository.save(req.toEntity());
-        return AccountDto.Response.SignupUSER.of(user);
+        userRepository.save(req.toEntity());
     }
 
     public AccountDto.Response.Token login(AccountDto.Request.Login req) {
