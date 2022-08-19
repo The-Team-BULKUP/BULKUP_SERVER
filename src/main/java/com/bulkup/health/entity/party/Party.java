@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Entity
@@ -60,6 +61,10 @@ public abstract class Party {
     @CreatedDate
     @Column(name = "create_at", nullable = false)
     private LocalDateTime createAt;
+
+    @JoinColumn(name = "crew_id", referencedColumnName = "id")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<PartyMember> members;
 
     @Transient
     public String getDiscriminatorValue(){

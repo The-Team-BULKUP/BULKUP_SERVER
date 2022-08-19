@@ -36,8 +36,8 @@ public class PartyController {
 
     @DeleteMapping("/{partyId}")
     @ResponseStatus(value = org.springframework.http.HttpStatus.NO_CONTENT)
-    public void deletePartyMapping() {
-
+    public void deletePartyMapping(@CurrentUserParameter Account account, @PathVariable Long partyId) {
+        partyService.deleteParty(account, partyId);
     }
 
     @GetMapping("/{partyId}")

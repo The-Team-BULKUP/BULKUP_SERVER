@@ -4,12 +4,14 @@ import com.bulkup.health.config.exception.CustomException;
 import com.bulkup.health.config.exception.ErrorCode;
 import com.bulkup.health.dto.PartyDto;
 import com.bulkup.health.entity.account.Account;
+import com.bulkup.health.entity.party.Party;
 import com.bulkup.health.entity.party.PartyAlone;
 import com.bulkup.health.entity.party.PartyCrew;
 import com.bulkup.health.entity.party.PartyMember;
 import com.bulkup.health.repository.party.PartyAloneRepository;
 import com.bulkup.health.repository.party.PartyCrewRepository;
 import com.bulkup.health.repository.party.PartyMemberRepository;
+import com.bulkup.health.repository.party.PartyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PartyService {
     private final PartyCrewRepository partyCrewRepository;
     private final PartyAloneRepository partyAloneRepository;
+    private final PartyRepository partyRepository;
     private final PartyMemberRepository partyMemberRepository;
     @Transactional
     public void createParty(Account account, PartyDto.Request.CreateParty request, String partyType) {
@@ -49,4 +52,21 @@ public class PartyService {
         partyMember.setPartyId(partyId);
         partyMemberRepository.save(partyMember);
     }
+
+    @Transactional
+    public void deleteParty(Account account, Long partyId){
+        if (account == null)
+            throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
+        Party party = partyRepository.findById(partyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.HANDLE_ACCESS_DENIED));
+
+        if (party.getCrewLeaderId().equals(account.getId())) {
+            // 본인의 파티만 삭제 가능
+            partyRepository.delete(party);
+        } else {
+            throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
+        }
+    }
+
+
 }
