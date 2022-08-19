@@ -25,7 +25,7 @@ public abstract class Account {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username", nullable = false, length = 20)
+    @Column(name = "username", unique = true, nullable = false, length = 20)
     private String username;
 
     @Column(name = "password", nullable = false, length = 100)
@@ -34,7 +34,7 @@ public abstract class Account {
     @Column(name = "real_name", nullable = false, length = 10)
     private String realName;
 
-    @Column(name = "phone", nullable = false, length = 15)
+    @Column(name = "phone", unique = true, nullable = false, length = 15)
     private String phone;
 
 //    @JsonIgnore
