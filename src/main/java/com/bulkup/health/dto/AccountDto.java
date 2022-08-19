@@ -70,6 +70,7 @@ public class AccountDto {
 
         @Data
         public static class SignupUSER {
+            @Size(min = 4, max = 20, message = "아이디는 4자 이상 20자 이하여야 합니다.")
             private String username;
             private String password;
             private String realName;
