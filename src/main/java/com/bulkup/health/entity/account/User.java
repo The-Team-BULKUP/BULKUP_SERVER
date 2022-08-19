@@ -14,6 +14,6 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @DiscriminatorValue("ROLE_USER")
 public class User extends Account{
-    @Column(name = "nickname", nullable = false, length = 10)
+    @Column(name = "nickname", nullable = false, length = 10, unique = true)
     private String nickname;
 }
