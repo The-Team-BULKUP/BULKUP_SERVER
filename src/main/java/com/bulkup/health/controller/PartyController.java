@@ -1,9 +1,14 @@
 package com.bulkup.health.controller;
 
+import com.bulkup.health.config.CurrentUserParameter;
+import com.bulkup.health.dto.PartyDto;
+import com.bulkup.health.entity.account.Account;
 import com.bulkup.health.service.PartyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -13,14 +18,14 @@ public class PartyController {
 
     @PostMapping("alone")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void createPartyAloneMapping() {
-
+    public void createPartyAloneMapping(@CurrentUserParameter Account account, @Valid PartyDto.Request.CreateParty request) {
+        partyService.createParty(account, request, "alone");
     }
 
     @PostMapping("crew")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void createPartyCrewMapping() {
-
+    public void createPartyCrewMapping(@CurrentUserParameter Account account, @Valid PartyDto.Request.CreateParty request) {
+        partyService.createParty(account, request, "crew");
     }
 
     @PutMapping("/{partyId}/")

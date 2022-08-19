@@ -11,8 +11,15 @@ public class PartyMember {
     private Long id;
 
     @Column(name = "crew_id", nullable = false)
-    private Long crewId;
+    private Long partyId;
 
     @Column(name = "account_id", nullable = false)
     private Long accountId;
+
+    public void setPartyId(Long partyId) {
+        this.partyId = partyId;
+    }
+    public void setMemberId(Long memberId) {
+        this.accountId = memberId;
+    }
 }
