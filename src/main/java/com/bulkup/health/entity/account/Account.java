@@ -50,4 +50,7 @@ public abstract class Account {
         DiscriminatorValue val = this.getClass().getAnnotation(DiscriminatorValue.class);
         return val == null ? null : val.value();
     }
+    public boolean isUser(){
+        return this.role == SecurityRole.USER;
+    }
 }
