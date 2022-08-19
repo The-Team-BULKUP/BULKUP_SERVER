@@ -1,5 +1,6 @@
 package com.bulkup.health.dto;
 
+import com.bulkup.health.config.spring_security.SecurityRole;
 import com.bulkup.health.entity.account.Trainer;
 import com.bulkup.health.entity.account.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,6 +22,7 @@ public class AccountDto {
             private String token;
             private String tokenExpired;
             private String refresh;
+            private SecurityRole role;
         }
         public static class SignupUSER {
             private String username;

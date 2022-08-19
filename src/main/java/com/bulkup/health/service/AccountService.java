@@ -3,6 +3,7 @@ package com.bulkup.health.service;
 import com.bulkup.health.config.exception.CustomException;
 import com.bulkup.health.config.exception.ErrorCode;
 import com.bulkup.health.config.jwt.TokenProvider;
+import com.bulkup.health.config.spring_security.SecurityRole;
 import com.bulkup.health.dto.AccountDto;
 import com.bulkup.health.entity.TokenStorage;
 import com.bulkup.health.entity.account.Account;
@@ -112,7 +113,7 @@ public class AccountService {
                 .username(account.getUsername())
                 .build();
         redisUtil.insertTokenToStorage(account.getUsername(), tokenStorageEntity);
-        return new AccountDto.Response.Token(accessToken, tokenExpired, refreshToken);
+        return new AccountDto.Response.Token(accessToken, tokenExpired, refreshToken, account.getRole());
     }
 
     @Transactional
@@ -130,6 +131,9 @@ public class AccountService {
         if (!findAccessToken.getRefreshToken().equals(oldRefreshToken))
             throw new CustomException(ErrorCode.UNCHECKED_ERROR);
 
+        SecurityRole userRole = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new CustomException(ErrorCode.HANDLE_ACCESS_DENIED)).getRole();
+
         Map<String, String> jwt = tokenProvider.createToken(username);
         String newAccessToken = jwt.get("token");
         String tokenExpired = jwt.get("tokenExpired");
@@ -142,6 +146,6 @@ public class AccountService {
                 .build();
 
         redisUtil.insertTokenToStorage(username, tokenStorageEntity);
-        return new AccountDto.Response.Token(newAccessToken, tokenExpired, newRefreshToken);
+        return new AccountDto.Response.Token(newAccessToken, tokenExpired, newRefreshToken, userRole);
     }
 }
