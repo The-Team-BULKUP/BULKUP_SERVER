@@ -6,31 +6,19 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class GymListDto {
+public class GymListByNameDto {
 
     @JsonProperty("result")
-    private Result result;
+    private List<Result> result;
     @JsonProperty("code")
     private int code;
-
-    @Getter
     public static class Result {
-        @JsonProperty("total")
-        private int total;
-        @JsonProperty("centerList")
-        private List<CenterList> centerList;
-        @JsonProperty("promotionalCenterList")
-        private List<String> promotionalCenterList;
-    }
-
-    @Getter
-    public static class CenterList {
-        @JsonProperty("dagymProgramList")
-        private List<String> dagymProgramList;
         @JsonProperty("isReservationRequired")
         private boolean isReservationRequired;
         @JsonProperty("isWomenOnly")
         private boolean isWomenOnly;
+        @JsonProperty("isShown")
+        private boolean isShown;
         @JsonProperty("tags")
         private List<String> tags;
         @JsonProperty("longitude")
