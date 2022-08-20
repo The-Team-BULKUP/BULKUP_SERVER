@@ -14,6 +14,12 @@ public enum ErrorCode {
     DOESNT_EXIST_TOKEN(501, "C005", "존재하지 않는 토큰"),
     ONLY_ACCESS_USER(501, "C006", "유저만 사용 할 수 있는 기능입니다."),
 
+    ONLY_ACCESS_TRAINER(501, "C007", "트레이너만 사용 할 수 있는 기능입니다."),
+    CANT_ACCESS_ADMIN(501, "C008", "어드민은 사용 할 수 없는 기능입니다."),
+    ONLY_ACCESS_USER_ADMIN(501, "C008", "어드민은 사용 할 수 없는 기능입니다."),
+    ONLY_ACCESS_CREW(501, "C009", "크루가 아닌 파티엔 참가할 수 없습니다."),
+    ALREADY_JOINED(501, "C010", "이미 참가중인 파티입니다."),
+
     // Member
     EMAIL_DUPLICATION(409, "M001", "존재하는 이메일"),
     NICKNAME_DUPLICATION(409, "M002", "존재하는 닉네임"),
@@ -21,6 +27,7 @@ public enum ErrorCode {
     PHONE_DUPLICATION(409, "M004", "존재하는 휴대폰 번호"),
 
     MEMBER_NOT_FOUND(403, "M005", "존재하지 않은 회원정보"),
+    PARTY_TRAINER_ALREADY_EXIST(403, "M006", "이미 배정된 트레이너가 존재하는 파티입니다."),
 
     // unchcked
     UNCHECKED_ERROR(500, "U001", "확인 할 수 없는 에러"),

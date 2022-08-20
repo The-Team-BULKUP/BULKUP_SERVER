@@ -31,8 +31,8 @@ public class PartyController {
 
     @PutMapping("/{partyId}/")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void updatePartyMapping() {
-
+    public void joinParty(@CurrentUserParameter Account account, @PathVariable Long partyId) {
+        partyService.joinParty(account, partyId);
     }
 
     @DeleteMapping("/{partyId}")
@@ -54,7 +54,8 @@ public class PartyController {
 
     @PutMapping("/{partyId}/trainer")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void updatePartyTrainerMapping() {
+    public void updatePartyTrainerMapping(@CurrentUserParameter Account account, @PathVariable Long partyId) {
+        partyService.registerPartyTrainer(account, partyId);
 
     }
 

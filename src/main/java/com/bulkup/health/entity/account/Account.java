@@ -53,4 +53,7 @@ public abstract class Account {
     public boolean isUser(){
         return this.role == SecurityRole.USER;
     }
+    public boolean isTrainer(){
+        return this.role == SecurityRole.TRAINER;
+    }
 }

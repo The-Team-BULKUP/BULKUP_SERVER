@@ -75,4 +75,8 @@ public abstract class Party {
     public void setCrewLeaderId(Long crewLeaderId) {
         this.crewLeaderId = crewLeaderId;
     }
+
+    public void setTrainerId(Long trainerId) {
+        this.trainerId = trainerId;
+    }
 }

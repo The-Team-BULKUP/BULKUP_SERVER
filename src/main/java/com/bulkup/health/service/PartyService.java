@@ -101,4 +101,40 @@ public class PartyService {
                 });
         return response;
     }
+    @Transactional
+    public void joinParty(Account account, Long partyId) {
+        if (account == null)
+            throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
+        Party party = partyRepository.findById(partyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.HANDLE_ACCESS_DENIED));
+        if (!party.getDiscriminatorValue().equals("crew"))
+            throw new CustomException(ErrorCode.ONLY_ACCESS_CREW);
+
+        if (account.isTrainer() || account.isUser()){
+            partyMemberRepository.findByPartyIdAndAccountId(partyId, account.getId())
+                    .ifPresent(partyMember -> {
+                        throw new CustomException(ErrorCode.ALREADY_JOINED);
+                    });
+            PartyMember partyMember = new PartyMember();
+            partyMember.setMemberId(account.getId());
+            partyMember.setPartyId(partyId);
+            partyMemberRepository.save(partyMember);
+        } else {
+            throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
+        }
+    }
+    @Transactional
+    public void registerPartyTrainer(Account account, Long partyId){
+        if (account == null)
+            throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
+        if (!account.isTrainer())
+            throw new CustomException(ErrorCode.ONLY_ACCESS_TRAINER);
+        Party party = partyRepository.findById(partyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.HANDLE_ACCESS_DENIED));
+
+        if (party.getTrainerId() == null) {
+            party.setTrainerId(account.getId());
+            partyRepository.save(party);
+        } else throw new CustomException(ErrorCode.PARTY_TRAINER_ALREADY_EXIST);
+    }
 }
