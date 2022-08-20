@@ -24,11 +24,10 @@ public class AccountDto {
             private String refresh;
             private SecurityRole role;
         }
-        public static class SignupUSER {
+        @Getter
+        @AllArgsConstructor
+        public static class User {
             private String username;
-            @JsonIgnore
-            private String password;
-            private String realName;
             private String nickname;
         }
 

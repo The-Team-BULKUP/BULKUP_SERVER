@@ -41,7 +41,7 @@ public abstract class Party {
     private Long preferredPrice;
 
     @Column(name = "preferred_how_many", nullable = false)
-    private String preferredHowMany;
+    private int preferredHowMany;
 
     @Column(name = "preferred_day", nullable = false)
     private String preferredDay;

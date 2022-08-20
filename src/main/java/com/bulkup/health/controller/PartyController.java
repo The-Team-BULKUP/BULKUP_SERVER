@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,9 +41,10 @@ public class PartyController {
         partyService.deleteParty(account, partyId);
     }
 
-    @GetMapping("/{partyId}")
-    public void searchPartyMapping() {
-
+    @GetMapping("crew")
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<PartyDto.Response.PartyInfo> searchPartyMapping(@CurrentUserParameter Account account, PartyDto.Request.SearchParty request) {
+        return partyService.searchPartyCrew(account, request);
     }
 
     @GetMapping("/")

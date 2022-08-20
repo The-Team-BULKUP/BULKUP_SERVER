@@ -2,12 +2,15 @@ package com.bulkup.health.service;
 
 import com.bulkup.health.config.exception.CustomException;
 import com.bulkup.health.config.exception.ErrorCode;
+import com.bulkup.health.dto.AccountDto;
 import com.bulkup.health.dto.PartyDto;
 import com.bulkup.health.entity.account.Account;
+import com.bulkup.health.entity.account.User;
 import com.bulkup.health.entity.party.Party;
 import com.bulkup.health.entity.party.PartyAlone;
 import com.bulkup.health.entity.party.PartyCrew;
 import com.bulkup.health.entity.party.PartyMember;
+import com.bulkup.health.repository.account.UserRepository;
 import com.bulkup.health.repository.party.PartyAloneRepository;
 import com.bulkup.health.repository.party.PartyCrewRepository;
 import com.bulkup.health.repository.party.PartyMemberRepository;
@@ -16,6 +19,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -26,6 +33,7 @@ public class PartyService {
     private final PartyAloneRepository partyAloneRepository;
     private final PartyRepository partyRepository;
     private final PartyMemberRepository partyMemberRepository;
+    private final UserRepository userRepository;
     @Transactional
     public void createParty(Account account, PartyDto.Request.CreateParty request, String partyType) {
         if (account == null || !account.isUser())
@@ -68,5 +76,29 @@ public class PartyService {
         }
     }
 
+    public List<PartyDto.Response.PartyInfo> searchPartyCrew(Account account, PartyDto.Request.SearchParty request) {
+        if (account == null)
+            throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
 
+        List<PartyCrew> results = partyRepository.searchPartyCrewByDistance(request.getLng(), request.getLat(), request.getDistance());
+        List<PartyDto.Response.PartyInfo> response = new ArrayList<>();
+        results.stream()
+                // 본인이 만든 파티는 검색 결과에서 제외
+                .filter(partyCrew -> !Objects.equals(partyCrew.getCrewLeaderId(), account.getId()))
+                .forEach(party -> {
+                    User crewLeader = userRepository.findById(party.getCrewLeaderId())
+                                    .orElseThrow(() -> new CustomException(ErrorCode.HANDLE_ACCESS_DENIED));
+                    PartyDto.Response.PartyInfo partyInfo =
+                            PartyDto.Response.PartyInfo.builder()
+                                    .name(party.getName())
+                                    .leader(new AccountDto.Response.User(crewLeader.getUsername(), crewLeader.getNickname()))
+                                    .preferredTime(party.getPreferredTime())
+                                    .preferredDay(party.getPreferredDay())
+                                    .preferredHowMany(party.getPreferredHowMany())
+                                    .discriminatorValue(party.getDiscriminatorValue())
+                                    .build();
+                    response.add(partyInfo);
+                });
+        return response;
+    }
 }
