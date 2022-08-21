@@ -95,6 +95,9 @@ public class PartyService {
                                     .preferredTime(party.getPreferredTime())
                                     .preferredDay(party.getPreferredDay())
                                     .preferredHowMany(party.getPreferredHowMany())
+                                    .preferredPrice(party.getPreferredPrice())
+                                    .distance(party.getCalculated_distance())
+                                    .point(new PartyDto.Response.Point(party.getBaseLatitude(), party.getBaseLongitude()))
                                     .discriminatorValue(party.getDiscriminatorValue())
                                     .build();
                     response.add(partyInfo);

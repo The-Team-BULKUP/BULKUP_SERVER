@@ -25,6 +25,15 @@ public class PartyDto {
             private String preferredTime;
             private Double distance;
             private String discriminatorValue;
+            private Point point;
+            private Long preferredPrice;
+        }
+
+        @Getter
+        @AllArgsConstructor
+        public static class Point{
+            private Double lat;
+            private Double lng;
         }
 
     }
@@ -41,7 +50,7 @@ public class PartyDto {
 
             private String preferredHowMany;
             private String preferredDay;
-            private  String preferredTime;
+            private String preferredTime;
         }
 
         @Data

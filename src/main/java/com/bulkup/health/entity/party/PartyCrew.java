@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -13,5 +14,6 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @DiscriminatorValue("crew")
 public class PartyCrew extends Party{
-
+    @Column(updatable = false, insertable = false)
+    private Double calculated_distance;
 }
