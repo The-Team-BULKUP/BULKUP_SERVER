@@ -23,6 +23,7 @@ public class AccountDto {
             private String tokenExpired;
             private String refresh;
             private SecurityRole role;
+            private String realName;
         }
         @Getter
         @AllArgsConstructor

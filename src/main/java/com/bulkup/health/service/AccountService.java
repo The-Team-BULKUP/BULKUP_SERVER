@@ -109,7 +109,7 @@ public class AccountService {
                 .username(account.getUsername())
                 .build();
         redisUtil.insertTokenToStorage(account.getUsername(), tokenStorageEntity);
-        return new AccountDto.Response.Token(accessToken, tokenExpired, refreshToken, account.getRole());
+        return new AccountDto.Response.Token(accessToken, tokenExpired, refreshToken, account.getRole(), account.getRealName());
     }
 
     @Transactional
@@ -121,6 +121,8 @@ public class AccountService {
         String username = findAccessToken.getUsername();
         log.info("reissue username : {}", username);
 
+        Account account = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         if (username == null)
             throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
         //refresh 토큰 비교
@@ -142,6 +144,6 @@ public class AccountService {
                 .build();
 
         redisUtil.insertTokenToStorage(username, tokenStorageEntity);
-        return new AccountDto.Response.Token(newAccessToken, tokenExpired, newRefreshToken, userRole);
+        return new AccountDto.Response.Token(newAccessToken, tokenExpired, newRefreshToken, userRole, account.getRealName());
     }
 }
