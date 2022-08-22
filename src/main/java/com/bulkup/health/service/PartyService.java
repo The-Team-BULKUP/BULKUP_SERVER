@@ -80,28 +80,28 @@ public class PartyService {
         if (account == null)
             throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
 
-        List<PartyCrew> results = partyRepository.searchPartyCrewByDistance(request.getLng(), request.getLat(), request.getDistance());
         List<PartyDto.Response.PartyInfo> response = new ArrayList<>();
-        results.stream()
+        partyRepository.searchPartyCrewByDistance(request.getLng(), request.getLat(), request.getDistance()).stream()
                 // 본인이 만든 파티는 검색 결과에서 제외
-                .filter(partyCrew -> !Objects.equals(partyCrew.getCrewLeaderId(), account.getId()))
-                .forEach(party -> {
-                    User crewLeader = userRepository.findById(party.getCrewLeaderId())
-                                    .orElseThrow(() -> new CustomException(ErrorCode.HANDLE_ACCESS_DENIED));
+                .filter(party -> !party.getLeaderIdx().equals(account.getId()))
+                .forEach(
+                party -> {
                     PartyDto.Response.PartyInfo partyInfo =
                             PartyDto.Response.PartyInfo.builder()
+                                    .id(party.getId())
                                     .name(party.getName())
-                                    .leader(new AccountDto.Response.User(crewLeader.getUsername(), crewLeader.getNickname()))
+                                    .leader(new AccountDto.Response.User(party.getId(), party.getLeaderUsername(), party.getLeaderNickname()))
                                     .preferredTime(party.getPreferredTime())
                                     .preferredDay(party.getPreferredDay())
                                     .preferredHowMany(party.getPreferredHowMany())
                                     .preferredPrice(party.getPreferredPrice())
-                                    .distance(party.getCalculated_distance())
-                                    .point(new PartyDto.Response.Point(party.getBaseLatitude(), party.getBaseLongitude()))
-                                    .discriminatorValue(party.getDiscriminatorValue())
+                                    .distance(party.getCalculatedDistance())
+                                    .point(new PartyDto.Response.Point(party.getLat(), party.getLng()))
+                                    .type(party.getType())
                                     .build();
                     response.add(partyInfo);
-                });
+                }
+        );
         return response;
     }
     @Transactional

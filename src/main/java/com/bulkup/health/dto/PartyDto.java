@@ -17,6 +17,7 @@ public class PartyDto {
         @Builder
         @AllArgsConstructor
         public static class PartyInfo {
+            private Long id;
             private String name;
             private AccountDto.Response.User leader;
             private Long trainerId;
@@ -24,9 +25,9 @@ public class PartyDto {
             private String preferredDay;
             private String preferredTime;
             private Double distance;
-            private String discriminatorValue;
             private Point point;
             private Long preferredPrice;
+            private String type;
         }
 
         @Getter

@@ -29,6 +29,7 @@ public class AccountDto {
         @Getter
         @AllArgsConstructor
         public static class User {
+            private Long id;
             private String username;
             private String nickname;
         }
