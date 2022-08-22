@@ -15,4 +15,5 @@ public interface PartyInformation {
     Double getLng();
     Long getPreferredPrice();
     String getType();
+    Integer getCurrentMemberCount();
 }

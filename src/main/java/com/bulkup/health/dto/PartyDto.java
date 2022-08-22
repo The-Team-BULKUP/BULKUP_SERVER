@@ -28,6 +28,7 @@ public class PartyDto {
             private Point point;
             private Long preferredPrice;
             private String type;
+            private Integer memberCount;
         }
 
         @Getter
