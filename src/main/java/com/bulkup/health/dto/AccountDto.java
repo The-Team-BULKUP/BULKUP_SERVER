@@ -1,5 +1,7 @@
 package com.bulkup.health.dto;
 
+import com.bulkup.health.config.exception.CustomException;
+import com.bulkup.health.config.exception.ErrorCode;
 import com.bulkup.health.config.spring_security.SecurityRole;
 import com.bulkup.health.entity.account.Trainer;
 import com.bulkup.health.entity.account.User;
@@ -7,11 +9,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.io.IOException;
 
 public class AccountDto {
     public static class Response {
@@ -63,6 +64,7 @@ public class AccountDto {
                         .realName(realName)
                         .nickname(nickname)
                         .phone(phone)
+                        .activated(true)
                         .build();
             }
         }
@@ -79,25 +81,50 @@ public class AccountDto {
             @Size(min = 2, max = 20, message = "이름은 2자 이상 20자 이하여야 합니다.")
             private String realName;
             @Min(value = 10000, message = "회당 가격을 제대로 입력해주세요.")
-            private int price_per;
+            private int pricePer;
             @NotEmpty(message = "헬스장 코드를 입력해주세요.")
-            private String gym_code;
+            private String gymCode;
+            @NotNull(message = "헬스장 선택이 잘못되었습니다.")
+            private Double gymLat;
+            @NotNull(message = "헬스장 선택이 잘못되었습니다.")
+            private Double gymLng;
+            @NotBlank(message = "헬스장 선택이 잘못되었습니다.")
+            private String gymName;
+
+            @NotBlank(message = "헬스장 선택이 잘못되었습니다.")
+            private String gymPhotoSmall;
             @NotEmpty(message = "자기소개를 입력해주세요.")
             private String introduce;
             @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}", message = "전화번호 형식이 올바르지 않습니다.")
             private String phone;
-
+            @NotNull(message = "프로필 이미지를 올려주세요.")
+            private MultipartFile profileImg;
+            @NotNull(message = "경력증명서 이미지를 올려주세요.")
+            private MultipartFile careerProofImg;
+            @NotNull(message = "신분증 이미지를 올려주세요.")
+            private MultipartFile idCardImg;
             public Trainer toEntity() {
-                return Trainer.builder()
-                        .username(username)
-                        .password(password)
-                        .realName(realName)
-                        .pricePer(price_per)
-                        .gymCode(gym_code)
-                        .introduce(introduce)
-                        .verified(false)
-                        .phone(phone)
-                        .build();
+                try {
+                    return Trainer.builder()
+                            .username(username)
+                            .password(password)
+                            .realName(realName)
+                            .pricePer(pricePer)
+                            .gymCode(gymCode)
+                            .introduce(introduce)
+                            .activated(false)
+                            .phone(phone)
+                            .profileImg(profileImg.getBytes())
+                            .idCardImg(idCardImg.getBytes())
+                            .careerProofImg(careerProofImg.getBytes())
+                            .gymLat(gymLat)
+                            .gymLng(gymLng)
+                            .gymName(gymName)
+                            .gymPhoto(gymPhotoSmall)
+                            .build();
+                } catch (IOException e) {
+                    throw new CustomException(ErrorCode.UNCHECKED_ERROR);
+                }
             }
         }
         @Data

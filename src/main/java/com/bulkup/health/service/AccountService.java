@@ -90,6 +90,11 @@ public class AccountService {
         Account account = accountRepository.findByUsername(req.getUsername())
                 .filter(m -> passwordEncoder.matches(req.getPassword(), m.getPassword()))
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        if (account.isTrainer() && Boolean.FALSE.equals(account.getActivated())) {
+            throw new CustomException(ErrorCode.TRAINER_NOT_ACTIVATED);
+        } else if (account.isUser() && Boolean.FALSE.equals(account.getActivated()))
+            throw new CustomException(ErrorCode.USER_BAN);
+
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(account.getUsername(), req.getPassword());

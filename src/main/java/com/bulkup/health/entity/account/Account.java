@@ -44,6 +44,10 @@ public abstract class Account {
 
     @Column(name = "introduce", length = 300)
     private String introduce;
+
+    @Column(name = "activated", nullable = false)
+    private Boolean activated;
+
     @Transient
     public String getDiscriminatorValue(){
         //for tests

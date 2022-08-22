@@ -28,6 +28,8 @@ public enum ErrorCode {
 
     MEMBER_NOT_FOUND(403, "M005", "존재하지 않은 회원정보"),
     PARTY_TRAINER_ALREADY_EXIST(403, "M006", "이미 배정된 트레이너가 존재하는 파티입니다."),
+    TRAINER_NOT_ACTIVATED(501, "M007", "가입 승인 되지 않은 트레이너입니다. 승인까지 기다려주세요."),
+    USER_BAN(501, "M008", "로그인 할수 없는 계정입니다. 고객센터에 문의해주세요."),
 
     // unchcked
     UNCHECKED_ERROR(500, "U001", "확인 할 수 없는 에러"),

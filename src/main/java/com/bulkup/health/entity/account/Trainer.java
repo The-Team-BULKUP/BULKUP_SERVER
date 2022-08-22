@@ -20,6 +20,25 @@ public class Trainer extends Account {
     @Column(name = "gym_code", nullable = false)
     private String gymCode;
 
-    @Column(name = "verified", nullable = false)
-    private Boolean verified;
+    @Column(name = "gym_lat", nullable = false)
+    private Double gymLat;
+
+    @Column(name = "gym_lng", nullable = false)
+    private Double gymLng;
+
+    @Column(name = "gym_name", nullable = false)
+    private String gymName;
+
+    @Column(name = "gym_photo", nullable = false)
+    private String gymPhoto;
+
+    @Column(name = "profile_img", nullable = false)
+    private byte[] profileImg;
+
+    @Column(name = "id_card_img", nullable = false)
+    private byte[] idCardImg;
+
+    @Column(name = "career_proof_img", nullable = false)
+    private byte[] careerProofImg;
+
 }
