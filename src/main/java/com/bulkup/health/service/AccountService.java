@@ -3,11 +3,10 @@ package com.bulkup.health.service;
 import com.bulkup.health.config.exception.CustomException;
 import com.bulkup.health.config.exception.ErrorCode;
 import com.bulkup.health.config.jwt.TokenProvider;
+import com.bulkup.health.config.spring_security.SecurityRole;
 import com.bulkup.health.dto.AccountDto;
 import com.bulkup.health.entity.TokenStorage;
 import com.bulkup.health.entity.account.Account;
-import com.bulkup.health.entity.account.Trainer;
-import com.bulkup.health.entity.account.User;
 import com.bulkup.health.repository.account.AccountRepository;
 import com.bulkup.health.repository.account.TrainerRepository;
 import com.bulkup.health.repository.account.UserRepository;
@@ -40,7 +39,7 @@ public class AccountService {
     private final UserRepository userRepository;
     private final TokenStorageRepository tokenStorageRepository;
     @Transactional
-    public AccountDto.Response.SignupTRAINER signupTrainer(AccountDto.Request.SignupTRAINER req) {
+    public void signupTrainer(AccountDto.Request.SignupTRAINER req) {
         // 회원 중복 검사 ( 아이디, 핸드폰 )
         accountRepository.findByUsername(req.getUsername())
                 .ifPresent(m -> {
@@ -57,13 +56,14 @@ public class AccountService {
         req.setPassword(encodedPassword);
 
         // 회원 저장
-        Trainer trainer = trainerRepository.save(req.toEntity());
-        return AccountDto.Response.SignupTRAINER.of(trainer);
+        trainerRepository.save(req.toEntity());
     }
 
     @Transactional
-    public AccountDto.Response.SignupUSER signupUser(AccountDto.Request.SignupUSER req) {
+    public void signupUser(AccountDto.Request.SignupUSER req) {
         // 회원 중복 검사 (아이디, 핸드폰, 닉네임)
+        log.info("username is :" + req.getUsername());
+
         accountRepository.findByUsername(req.getUsername())
                 .ifPresent(m -> {
                     throw new CustomException(ErrorCode.USERNAME_DUPLICATION);
@@ -83,8 +83,7 @@ public class AccountService {
         req.setPassword(encodedPassword);
 
         // 회원 저장
-        User user = userRepository.save(req.toEntity());
-        return AccountDto.Response.SignupUSER.of(user);
+        userRepository.save(req.toEntity());
     }
 
     public AccountDto.Response.Token login(AccountDto.Request.Login req) {
@@ -93,6 +92,11 @@ public class AccountService {
         Account account = accountRepository.findByUsername(req.getUsername())
                 .filter(m -> passwordEncoder.matches(req.getPassword(), m.getPassword()))
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        if (account.isTrainer() && Boolean.FALSE.equals(account.getActivated())) {
+            throw new CustomException(ErrorCode.TRAINER_NOT_ACTIVATED);
+        } else if (account.isUser() && Boolean.FALSE.equals(account.getActivated()))
+            throw new CustomException(ErrorCode.USER_BAN);
+
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(account.getUsername(), req.getPassword());
@@ -112,7 +116,7 @@ public class AccountService {
                 .username(account.getUsername())
                 .build();
         redisUtil.insertTokenToStorage(account.getUsername(), tokenStorageEntity);
-        return new AccountDto.Response.Token(accessToken, tokenExpired, refreshToken);
+        return new AccountDto.Response.Token(accessToken, tokenExpired, refreshToken, account.getRole(), account.getRealName());
     }
 
     @Transactional
@@ -124,11 +128,16 @@ public class AccountService {
         String username = findAccessToken.getUsername();
         log.info("reissue username : {}", username);
 
+        Account account = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         if (username == null)
             throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
         //refresh 토큰 비교
         if (!findAccessToken.getRefreshToken().equals(oldRefreshToken))
             throw new CustomException(ErrorCode.UNCHECKED_ERROR);
+
+        SecurityRole userRole = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new CustomException(ErrorCode.HANDLE_ACCESS_DENIED)).getRole();
 
         Map<String, String> jwt = tokenProvider.createToken(username);
         String newAccessToken = jwt.get("token");
@@ -142,6 +151,6 @@ public class AccountService {
                 .build();
 
         redisUtil.insertTokenToStorage(username, tokenStorageEntity);
-        return new AccountDto.Response.Token(newAccessToken, tokenExpired, newRefreshToken);
+        return new AccountDto.Response.Token(newAccessToken, tokenExpired, newRefreshToken, userRole, account.getRealName());
     }
 }

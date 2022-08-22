@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Entity
@@ -17,6 +20,7 @@ import java.time.Instant;
         name = "party_type",
         discriminatorType = DiscriminatorType.STRING,
         columnDefinition = "VARCHAR(5)")
+@EntityListeners(AuditingEntityListener.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Party {
     @Id
@@ -28,22 +32,22 @@ public abstract class Party {
     private String name;
 
     @Column(name = "crew_leader_id", nullable = false, length = 45)
-    private String crewLeaderId;
+    private Long crewLeaderId;
 
     @Column(name = "trainer_id")
     private Long trainerId;
 
     @Column(name = "preferred_price", nullable = false)
-    private Integer preferredPrice;
+    private Long preferredPrice;
 
     @Column(name = "preferred_how_many", nullable = false)
-    private Integer preferredHowMany;
+    private int preferredHowMany;
 
     @Column(name = "preferred_day", nullable = false)
-    private Boolean preferredDay = false;
+    private String preferredDay;
 
     @Column(name = "preferred_time")
-    private Boolean preferredTime;
+    private String preferredTime;
 
     @Column(name = "preferred_distance", nullable = false)
     private Double preferredDistance;
@@ -54,13 +58,25 @@ public abstract class Party {
     @Column(name = "base_longitude", nullable = false)
     private Double baseLongitude;
 
+    @CreatedDate
     @Column(name = "create_at", nullable = false)
-    private Instant createAt;
+    private LocalDateTime createAt;
+
+    @JoinColumn(name = "crew_id", referencedColumnName = "id")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<PartyMember> members;
 
     @Transient
     public String getDiscriminatorValue(){
         //for tests
         DiscriminatorValue val = this.getClass().getAnnotation(DiscriminatorValue.class);
         return val == null ? null : val.value();
+    }
+    public void setCrewLeaderId(Long crewLeaderId) {
+        this.crewLeaderId = crewLeaderId;
+    }
+
+    public void setTrainerId(Long trainerId) {
+        this.trainerId = trainerId;
     }
 }

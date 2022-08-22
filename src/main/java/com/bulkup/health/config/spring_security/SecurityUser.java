@@ -9,7 +9,9 @@ import org.springframework.security.core.userdetails.User;
 @Slf4j
 @Getter
 public class SecurityUser extends User {
+    Account account;
     public SecurityUser(Account account) {
         super(account.getUsername(), account.getPassword(), AuthorityUtils.createAuthorityList(account.getRole().toString()));
+        this.account = account;
     }
 }

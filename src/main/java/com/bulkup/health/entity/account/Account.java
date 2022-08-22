@@ -2,7 +2,9 @@ package com.bulkup.health.entity.account;
 
 import com.bulkup.health.config.spring_security.SecurityRole;
 import com.bulkup.health.config.spring_security.SecurityRoleConverter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -28,6 +30,7 @@ public abstract class Account {
     @Column(name = "username", unique = true, nullable = false, length = 20)
     private String username;
 
+    @JsonIgnore
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
@@ -44,10 +47,20 @@ public abstract class Account {
 
     @Column(name = "introduce", length = 300)
     private String introduce;
+
+    @Column(name = "activated", nullable = false)
+    private Boolean activated;
+
     @Transient
     public String getDiscriminatorValue(){
         //for tests
         DiscriminatorValue val = this.getClass().getAnnotation(DiscriminatorValue.class);
         return val == null ? null : val.value();
+    }
+    public boolean isUser(){
+        return this.role == SecurityRole.USER;
+    }
+    public boolean isTrainer(){
+        return this.role == SecurityRole.TRAINER;
     }
 }

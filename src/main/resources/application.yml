@@ -4,14 +4,14 @@ spring:
 #      enabled: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://ls-ea5c0d0629a8cc8a80428da3902f9351759ae363.cemxsedh0w8x.ap-northeast-2.rds.amazonaws.com/bulkup"
+    url: "jdbc:mysql://localhost/bulkup"
     port: 3306
-    username: "admin"
-    password: "]or`$>P5Q+,M=gpPpU.QgI,{an``e7c3"
+    username: "root"
+    password: ""
   redis:
-    host: 15.165.86.75
+    host: localhost
     port: 6379
-    password: penekhunCTFJserver!@!@
+    password:
     #todo: 대회 직전엔 DB정보들 환경변수나 실행 인자값으로 뺍시다
     #todo: 코드 분석툴에 무조건 걸릴듯 - hun
 
@@ -20,6 +20,7 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+    generate-ddl: true
 
 jwt:
   header: Authorization
