@@ -47,16 +47,15 @@ public class PartyController {
         return partyService.searchPartyCrew(account, request);
     }
 
-    @GetMapping("/")
-    public void getMyPartyListMapping() {
-
+    @GetMapping("/my/in")
+    public PartyDto.Response.GetMyPartyList getMyPartyInMapping(@CurrentUserParameter Account account) {
+        return partyService.getMyPartyIn(account);
     }
 
     @PutMapping("/{partyId}/trainer")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void updatePartyTrainerMapping(@CurrentUserParameter Account account, @PathVariable Long partyId) {
         partyService.registerPartyTrainer(account, partyId);
-
     }
 
 }

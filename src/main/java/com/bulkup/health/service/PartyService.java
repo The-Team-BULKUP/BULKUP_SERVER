@@ -4,12 +4,14 @@ import com.bulkup.health.config.exception.CustomException;
 import com.bulkup.health.config.exception.ErrorCode;
 import com.bulkup.health.dto.AccountDto;
 import com.bulkup.health.dto.PartyDto;
+import com.bulkup.health.dto.PartyMemberDto;
 import com.bulkup.health.entity.account.Account;
-import com.bulkup.health.entity.account.User;
+import com.bulkup.health.entity.account.Trainer;
 import com.bulkup.health.entity.party.Party;
 import com.bulkup.health.entity.party.PartyAlone;
 import com.bulkup.health.entity.party.PartyCrew;
 import com.bulkup.health.entity.party.PartyMember;
+import com.bulkup.health.repository.account.TrainerRepository;
 import com.bulkup.health.repository.account.UserRepository;
 import com.bulkup.health.repository.party.PartyAloneRepository;
 import com.bulkup.health.repository.party.PartyCrewRepository;
@@ -21,8 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -34,6 +36,7 @@ public class PartyService {
     private final PartyRepository partyRepository;
     private final PartyMemberRepository partyMemberRepository;
     private final UserRepository userRepository;
+    private final TrainerRepository trainerRepository;
     @Transactional
     public void createParty(Account account, PartyDto.Request.CreateParty request, String partyType) {
         if (account == null || !account.isUser())
@@ -76,6 +79,47 @@ public class PartyService {
         }
     }
 
+    public PartyDto.Response.GetMyPartyList getMyPartyIn(Account account) {
+    // 내가 참가자로 속한 파티 조회 메서드
+        if (account == null)
+            throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
+
+        PartyDto.Response.GetMyPartyList response = new PartyDto.Response.GetMyPartyList();
+        List<Party> partyList_temp = partyRepository.getPartyByParticipantId(account.getId());
+        partyList_temp.forEach(
+                party -> {
+                    Trainer trainer = (party.getTrainerId() != null) ? trainerRepository.findById(party.getTrainerId()).orElse(null) : null;
+                    PartyMemberDto.Response.Trainer trainerInfo = null;
+                    if (trainer != null){
+                        trainerInfo =
+                                PartyMemberDto.Response.Trainer.builder()
+                                .id(trainer.getId())
+                                .realName(trainer.getRealName())
+                                .username(trainer.getUsername())
+                                .profileImg(Base64.getEncoder().encodeToString(trainer.getProfileImg()))
+                                .gym(new PartyMemberDto.Response.Gym(trainer.getGymLat(), trainer.getGymLng(), trainer.getGymName(), trainer.getGymPhoto()))
+                                .introudce(trainer.getIntroduce())
+                                .build();
+                    }
+                    response.addList(
+                            PartyDto.Response.GetMyParty.builder()
+                                    .id(party.getId())
+                                    .trainer(trainerInfo)
+                                    .partyType(party.getDiscriminatorValue())
+                                    .preferredDay(party.getPreferredDay())
+                                    .preferredPrice(party.getPreferredPrice())
+                                    .preferredHowMany(party.getPreferredHowMany())
+                                    .preferredTime(party.getPreferredTime())
+                                    .name(party.getName())
+                                    .description(party.getDescription())
+                                    .hostByMe(false)
+                                    .build()
+                    );
+                }
+        );
+        return response;
+    }
+
     public List<PartyDto.Response.PartyInfo> searchPartyCrew(Account account, PartyDto.Request.SearchParty request) {
         if (account == null)
             throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
@@ -90,6 +134,7 @@ public class PartyService {
                             PartyDto.Response.PartyInfo.builder()
                                     .id(party.getId())
                                     .name(party.getName())
+                                    .description(party.getDescription())
                                     .leader(new AccountDto.Response.User(party.getId(), party.getLeaderUsername(), party.getLeaderNickname()))
                                     .preferredTime(party.getPreferredTime())
                                     .preferredDay(party.getPreferredDay())
@@ -97,6 +142,7 @@ public class PartyService {
                                     .preferredPrice(party.getPreferredPrice())
                                     .distance(party.getCalculatedDistance())
                                     .point(new PartyDto.Response.Point(party.getLat(), party.getLng()))
+                                    .memberCount(party.getCurrentMemberCount())
                                     .type(party.getType())
                                     .build();
                     response.add(partyInfo);
@@ -110,21 +156,17 @@ public class PartyService {
             throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
         Party party = partyRepository.findById(partyId)
                 .orElseThrow(() -> new CustomException(ErrorCode.HANDLE_ACCESS_DENIED));
-        if (!party.getDiscriminatorValue().equals("crew"))
+        if (account.isUser() && !party.getDiscriminatorValue().equals("crew"))
             throw new CustomException(ErrorCode.ONLY_ACCESS_CREW);
 
-        if (account.isTrainer() || account.isUser()){
-            partyMemberRepository.findByPartyIdAndAccountId(partyId, account.getId())
-                    .ifPresent(partyMember -> {
-                        throw new CustomException(ErrorCode.ALREADY_JOINED);
-                    });
-            PartyMember partyMember = new PartyMember();
-            partyMember.setMemberId(account.getId());
-            partyMember.setPartyId(partyId);
-            partyMemberRepository.save(partyMember);
-        } else {
-            throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
-        }
+        partyMemberRepository.findByPartyIdAndAccountId(partyId, account.getId())
+                .ifPresent(partyMember -> {
+                    throw new CustomException(ErrorCode.ALREADY_JOINED);
+                });
+        PartyMember partyMember = new PartyMember();
+        partyMember.setMemberId(account.getId());
+        partyMember.setPartyId(partyId);
+        partyMemberRepository.save(partyMember);
     }
     @Transactional
     public void registerPartyTrainer(Account account, Long partyId){

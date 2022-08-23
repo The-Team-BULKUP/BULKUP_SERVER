@@ -11,9 +11,42 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PartyDto {
     public static class Response {
+
+        @Getter
+        public static class GetMyPartyList {
+            private List<GetMyParty> myParty;
+            public GetMyPartyList() {
+                this.myParty = new ArrayList<>();
+            }
+            public void addList(GetMyParty myParty) {
+                this.myParty.add(myParty);
+            }
+        }
+
+
+        @Getter
+        @Builder
+        @AllArgsConstructor
+        public static class GetMyParty {
+            private Long id;
+            private String name;
+            private PartyMemberDto.Response.Trainer trainer;
+            private List<PartyMemberDto.Response.User> member;
+            private String description;
+            private String preferredDay;
+            private String preferredTime;
+            private Integer preferredHowMany;
+            private Long preferredPrice;
+            private Integer memberCount;
+            private String partyType;
+            private boolean hostByMe;
+        }
+
         @Getter
         @Builder
         @AllArgsConstructor

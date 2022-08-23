@@ -29,4 +29,11 @@ public interface PartyRepository extends JpaRepository<Party, Long> {
             " order by calculatedDistance", nativeQuery = true)
     List<PartyInformation> searchPartyCrewByDistance(double lng, double lat, double dist);
 
+    List<Party> getAllByCrewLeaderId(Long crewLeaderId);
+
+    @Query(value="SELECT * " +
+                "FROM party_member " +
+                "JOIN party ON party_member.crew_id = party.id " +
+                "WHERE party_member.account_id = :participantId", nativeQuery = true)
+    List<Party> getPartyByParticipantId(Long participantId);
 }
