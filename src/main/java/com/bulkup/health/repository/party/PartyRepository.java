@@ -25,7 +25,8 @@ public interface PartyRepository extends JpaRepository<Party, Long> {
             "ON party.id = pm.crew_id " +
             "WHERE ST_Distance_Sphere(POINT(:lng, :lat), POINT(base_longitude, base_latitude)) <= :dist " +
             "       AND party.party_type='crew' " +
-            "       AND party.trainer_id IS NULL", nativeQuery = true)
+            "       AND party.trainer_id IS NULL " +
+            " order by calculatedDistance", nativeQuery = true)
     List<PartyInformation> searchPartyCrewByDistance(double lng, double lat, double dist);
 
 }
