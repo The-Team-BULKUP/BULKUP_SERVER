@@ -21,7 +21,7 @@ public interface PartyRepository extends JpaRepository<Party, Long> {
             "JOIN account a ON a.id = party.crew_leader_id " +
             "LEFT OUTER JOIN ( SELECT party_member.crew_id, party_member.account_id, COUNT(*) AS CNT " +
             "FROM party_member " +
-            "GROUP BY party_member.id) as pm " +
+            "GROUP BY party_member.crew_id) as pm " +
             "ON party.id = pm.crew_id " +
             "WHERE ST_Distance_Sphere(POINT(:lng, :lat), POINT(base_longitude, base_latitude)) <= :dist " +
             "       AND party.party_type='crew' " +
