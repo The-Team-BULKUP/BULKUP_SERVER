@@ -10,7 +10,7 @@ import java.util.List;
 public interface PartyRepository extends JpaRepository<Party, Long> {
 
     // todo: Spatial Index로 성능 최적화 하기 -hun
-    @Query(value = "SELECT party.id as id, party.name as name , party.crew_leader_id as leaderIdx, " +
+    @Query(value = "SELECT party.id as id, party.description as description, party.name as name , party.crew_leader_id as leaderIdx, " +
             " party.preferred_day as preferredDay, party.preferred_distance as preferredDistance, " +
             " party.preferred_how_many as preferredHowMany, party.preferred_price as preferredPrice, party.preferred_time as preferredTime, " +
             " party.base_latitude as lat, party.base_longitude as lng, party.party_type as type, party.create_at as createAt, " +
