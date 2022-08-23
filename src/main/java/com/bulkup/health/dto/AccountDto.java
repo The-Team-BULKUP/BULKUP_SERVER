@@ -54,9 +54,15 @@ public class AccountDto {
         public static class SignupUSER {
             @Size(min = 4, max = 20, message = "아이디는 4자 이상 20자 이하여야 합니다.")
             private String username;
+            @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()]).{8,}$",
+                    message = "패스워드는 다음 규칙을 충족해야합니다.\n" +
+                            "최소 8 자, 대문자 하나 이상, 소문자 하나, 숫자 하나 및 특수 문자 하나 이상")
             private String password;
+            @NotBlank(message = "이름을 입력해주세요.")
             private String realName;
+            @NotBlank(message = "닉네임을 입력해주세요.")
             private String nickname;
+            @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}", message = "전화번호 형식이 올바르지 않습니다.")
             private String phone;
             public User toEntity(){
                 return User.builder()
