@@ -20,8 +20,10 @@ public class PartyMemberDto {
             private Long id;
             private String username;
             private String realName;
-            private String introudce;
+            private String introduce;
+            private Integer pricePer;
             private String profileImg;
+            private Double distance;
             private Gym gym;
         }
 

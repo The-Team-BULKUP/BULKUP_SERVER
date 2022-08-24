@@ -98,7 +98,8 @@ public class PartyService {
                                 .username(trainer.getUsername())
                                 .profileImg(Base64.getEncoder().encodeToString(trainer.getProfileImg()))
                                 .gym(new PartyMemberDto.Response.Gym(trainer.getGymLat(), trainer.getGymLng(), trainer.getGymName(), trainer.getGymPhoto()))
-                                .introudce(trainer.getIntroduce())
+                                .introduce(trainer.getIntroduce())
+                                .pricePer(trainer.getPricePer())
                                 .build();
                     }
                     response.addList(
