@@ -7,6 +7,7 @@ import com.bulkup.health.dto.BoardDto;
 import com.bulkup.health.entity.account.Account;
 import com.bulkup.health.entity.community.Board;
 import com.bulkup.health.repository.community.BoardRepository;
+import com.bulkup.health.repository.community.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ import java.util.Optional;
 @Transactional()
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
 
     public void createPost(Long accountId, BoardDto.Request.CreatePost req) {
         boardRepository.save(req.toEntity(accountId));
@@ -36,6 +38,14 @@ public class BoardService {
                 .orElse(null);
 
         if (post == null) throw new CustomException(ErrorCode.UNCHECKED_ERROR); // TODO: fix custom error
-        return new BoardDto.Response.GetPostById(post.getTitle(), post.getContent(), post.getWriter());
+        return new BoardDto.Response.GetPostById(post.getTitle(), post.getContent(), post.getWriter(), post.getComments());
     }
+
+    public void createComment(Long accountId, Long boardId, BoardDto.Request.CreateComment req) {
+        commentRepository.save(req.toEntity(accountId, boardId));
+    }
+
+//    public BoardDto.Response.GetComments getComments(Long boardId) {
+//        boar
+//    }
 }

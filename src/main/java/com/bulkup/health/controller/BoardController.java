@@ -32,4 +32,15 @@ public class BoardController {
     public BoardDto.Response.GetPostById getPostById(@PathVariable("id") Long id) {
         return boardService.getPostById(id);
     }
+
+    @GetMapping("/{id}/comments")
+    public void getCommentsByPostId(@CurrentUserParameter Account account, @PathVariable("id") Long id) {
+
+    }
+
+    @PostMapping("/{id}/comments")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createCommentByPostId(@CurrentUserParameter Account account, @PathVariable("id") Long id, @Validated BoardDto.Request.CreateComment req) {
+        boardService.createComment(account.getId(), id, req);
+    }
 }
