@@ -130,25 +130,25 @@ public class PartyService {
                 // 본인이 만든 파티는 검색 결과에서 제외
                 .filter(party -> !party.getLeaderIdx().equals(account.getId()))
                 .forEach(
-                party -> {
-                    PartyDto.Response.PartyInfo partyInfo =
-                            PartyDto.Response.PartyInfo.builder()
-                                    .id(party.getId())
-                                    .name(party.getName())
-                                    .description(party.getDescription())
-                                    .leader(new AccountDto.Response.User(party.getId(), party.getLeaderUsername(), party.getLeaderNickname()))
-                                    .preferredTime(party.getPreferredTime())
-                                    .preferredDay(party.getPreferredDay())
-                                    .preferredHowMany(party.getPreferredHowMany())
-                                    .preferredPrice(party.getPreferredPrice())
-                                    .distance(party.getCalculatedDistance())
-                                    .point(new PartyDto.Response.Point(party.getLat(), party.getLng()))
-                                    .memberCount(party.getCurrentMemberCount())
-                                    .type(party.getType())
-                                    .build();
-                    response.add(partyInfo);
-                }
-        );
+                        party -> {
+                            PartyDto.Response.PartyInfo partyInfo =
+                                    PartyDto.Response.PartyInfo.builder()
+                                            .id(party.getId())
+                                            .name(party.getName())
+                                            .description(party.getDescription())
+                                            .leader(new AccountDto.Response.User(party.getId(), party.getLeaderUsername(), party.getLeaderNickname()))
+                                            .preferredTime(party.getPreferredTime())
+                                            .preferredDay(party.getPreferredDay())
+                                            .preferredHowMany(party.getPreferredHowMany())
+                                            .preferredPrice(party.getPreferredPrice())
+                                            .distance(party.getCalculatedDistance())
+                                            .point(new PartyDto.Response.Point(party.getLat(), party.getLng()))
+                                            .memberCount(party.getCurrentMemberCount())
+                                            .type(party.getType())
+                                            .build();
+                            response.add(partyInfo);
+                        }
+                );
         return response;
     }
     @Transactional
@@ -182,5 +182,41 @@ public class PartyService {
             party.setTrainerId(account.getId());
             partyRepository.save(party);
         } else throw new CustomException(ErrorCode.PARTY_TRAINER_ALREADY_EXIST);
+    }
+
+    public List<PartyDto.Response.PartyInfo> findPartyForTrainer(Account account) {
+
+        if (account == null)
+            throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
+
+        Trainer trainer = trainerRepository.findById(account.getId())
+                .orElseThrow(() -> new CustomException(ErrorCode.HANDLE_ACCESS_DENIED));
+
+        double gymLat = trainer.getGymLat();
+        double gymLng = trainer.getGymLng();
+        List<PartyDto.Response.PartyInfo> response = new ArrayList<>();
+        partyRepository.searchPartyForTrainer(gymLng, gymLat).stream()
+                .forEach(
+                        party -> {
+                            PartyDto.Response.PartyInfo partyInfo =
+                                    PartyDto.Response.PartyInfo.builder()
+                                            .id(party.getId())
+                                            .name(party.getName())
+                                            .description(party.getDescription())
+                                            .leader(new AccountDto.Response.User(party.getId(), party.getLeaderUsername(), party.getLeaderNickname()))
+                                            .preferredTime(party.getPreferredTime())
+                                            .preferredDay(party.getPreferredDay())
+                                            .preferredHowMany(party.getPreferredHowMany())
+                                            .preferredPrice(party.getPreferredPrice())
+                                            .distance(party.getCalculatedDistance())
+                                            .point(new PartyDto.Response.Point(party.getLat(), party.getLng()))
+                                            .memberCount(party.getCurrentMemberCount())
+                                            .type(party.getType())
+                                            .build();
+                            response.add(partyInfo);
+                        }
+                );
+        return response;
+
     }
 }

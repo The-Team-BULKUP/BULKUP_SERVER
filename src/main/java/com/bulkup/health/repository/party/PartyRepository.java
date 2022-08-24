@@ -29,6 +29,24 @@ public interface PartyRepository extends JpaRepository<Party, Long> {
             " order by calculatedDistance", nativeQuery = true)
     List<PartyInformation> searchPartyCrewByDistance(double lng, double lat, double dist);
 
+    @Query(value = "SELECT party.id as id, party.description as description, party.name as name , party.crew_leader_id as leaderIdx, " +
+            " party.preferred_day as preferredDay, party.preferred_distance as preferredDistance, " +
+            " party.preferred_how_many as preferredHowMany, party.preferred_price as preferredPrice, party.preferred_time as preferredTime, " +
+            " party.base_latitude as lat, party.base_longitude as lng, party.party_type as type, party.create_at as createAt, " +
+            " a.username as leaderUsername, a.nickname as leaderNickname, " +
+            " IFNULL(pm.CNT, 0) + 1 AS currentMemberCount, " +
+            " ST_Distance_Sphere(POINT(:gymLng, :gymLat), POINT(base_longitude, base_latitude)) AS calculatedDistance " +
+            "FROM party " +
+            "JOIN account a ON a.id = party.crew_leader_id " +
+            "LEFT OUTER JOIN ( SELECT party_member.crew_id, party_member.account_id, COUNT(*) AS CNT " +
+            "FROM party_member " +
+            "GROUP BY party_member.crew_id) as pm " +
+            "ON party.id = pm.crew_id " +
+            "WHERE ST_Distance_Sphere(POINT(:gymLng, :gymLat), POINT(base_longitude, base_latitude)) <= party.preferred_distance + 1000" +
+            "       AND party.trainer_id IS NULL " +
+            " order by calculatedDistance", nativeQuery = true)
+    List<PartyInformation> searchPartyForTrainer(double gymLng, double gymLat);
+
     List<Party> getAllByCrewLeaderId(Long crewLeaderId);
 
     @Query(value="SELECT * " +
