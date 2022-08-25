@@ -143,6 +143,7 @@ public class PartyService {
                                             .preferredPrice(party.getPreferredPrice())
                                             .distance(party.getCalculatedDistance())
                                             .point(new PartyDto.Response.Point(party.getLat(), party.getLng()))
+                                            .preferredDistance(party.getPreferredDistance())
                                             .memberCount(party.getCurrentMemberCount())
                                             .type(party.getType())
                                             .build();
@@ -211,6 +212,7 @@ public class PartyService {
                                             .distance(party.getCalculatedDistance())
                                             .point(new PartyDto.Response.Point(party.getLat(), party.getLng()))
                                             .memberCount(party.getCurrentMemberCount())
+                                            .preferredDistance(party.getPreferredDistance())
                                             .type(party.getType())
                                             .build();
                             response.add(partyInfo);

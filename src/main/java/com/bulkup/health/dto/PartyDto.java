@@ -62,6 +62,7 @@ public class PartyDto {
             private Double distance;
             private Point point;
             private Long preferredPrice;
+            private Double preferredDistance;
             private String type;
             private Integer memberCount;
         }

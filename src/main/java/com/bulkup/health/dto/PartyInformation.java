@@ -9,6 +9,7 @@ public interface PartyInformation {
     String getLeaderNickname();
     Long getTrainerId();
     String getTrainerRealName();
+    Double getPreferredDistance();
 
     Integer getPreferredHowMany();
     String getPreferredDay();
