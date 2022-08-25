@@ -26,6 +26,10 @@ public class Chat {
     @ManyToOne
     private Account sender;
 
+    @JoinColumn(name = "chat_room_id")
+    @ManyToOne
+    private ChatRoom chatRoom;
+
     @Column(length = 100)
     private String message;
 }
