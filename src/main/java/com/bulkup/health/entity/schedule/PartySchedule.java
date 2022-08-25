@@ -14,6 +14,15 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @DiscriminatorValue("party")
 public class PartySchedule extends Schedule {
-    @Column(name = "crewid")
+    @Column(name = "crew_id")
     private Long crewId;
+    @Column(name = "trainer_id")
+    private Long trainerId;
+    public void setTrainerId(Long trainerId) {
+        this.trainerId = trainerId;
+    }
+
+    public void setCrewId(Long crewId) {
+        this.crewId = crewId;
+    }
 }

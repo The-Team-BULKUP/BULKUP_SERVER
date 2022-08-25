@@ -54,4 +54,6 @@ public interface PartyRepository extends JpaRepository<Party, Long> {
                 "JOIN party ON party_member.crew_id = party.id " +
                 "WHERE party_member.account_id = :participantId", nativeQuery = true)
     List<Party> getPartyByParticipantId(Long participantId);
+    List<Party> findAllByCrewLeaderId(Long crewLeaderId);
+
 }

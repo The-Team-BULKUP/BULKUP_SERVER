@@ -31,4 +31,8 @@ public class PartyMember {
     public void setMemberId(Long memberId) {
         this.accountId = memberId;
     }
+
+    public Long getPartyId() {
+        return partyId;
+    }
 }

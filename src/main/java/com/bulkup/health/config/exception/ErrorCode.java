@@ -19,6 +19,7 @@ public enum ErrorCode {
     ONLY_ACCESS_USER_ADMIN(501, "C008", "어드민은 사용 할 수 없는 기능입니다."),
     ONLY_ACCESS_CREW(501, "C009", "크루가 아닌 파티엔 참가할 수 없습니다."),
     ALREADY_JOINED(501, "C010", "이미 참가중인 파티입니다."),
+    TIME_VALUE_ERROR(501, "C011", "시간값이 잘못되었습니다."),
 
     // Member
     EMAIL_DUPLICATION(409, "M001", "존재하는 이메일"),
@@ -33,10 +34,7 @@ public enum ErrorCode {
 
     // unchcked
     UNCHECKED_ERROR(500, "U001", "확인 할 수 없는 에러"),
-
-
-
-    ;
+    HANDLE_INVALID_PARAMETER(400, "H001", "잘못된 파라미터");
     private final String errorCodeStr;
     private final String message;
     private final int status;

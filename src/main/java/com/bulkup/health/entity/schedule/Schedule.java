@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.BitSet;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -16,7 +16,7 @@ import java.util.BitSet;
 @DiscriminatorColumn(
         name = "schedule_type",
         discriminatorType = DiscriminatorType.STRING,
-        columnDefinition = "VARCHAR(10)")
+        columnDefinition = "VARCHAR(15)")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Schedule {
     @Id
@@ -24,11 +24,14 @@ public abstract class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "yyyymmdd", nullable = false)
-    private Integer yyyymmdd;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @Column(name = "time", nullable = false)
-    private BitSet time;
+    @Column(name = "start", nullable = false)
+    private LocalDateTime start;
+
+    @Column(name = "end", nullable = false)
+    private LocalDateTime end;
 
     @Transient
     public String getDiscriminatorValue(){

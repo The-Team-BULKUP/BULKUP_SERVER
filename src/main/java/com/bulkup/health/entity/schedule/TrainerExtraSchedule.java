@@ -12,9 +12,12 @@ import javax.persistence.Entity;
 @Getter
 @SuperBuilder
 @NoArgsConstructor
-@DiscriminatorValue("extra")
+@DiscriminatorValue("trainer_extra")
 public class TrainerExtraSchedule extends Schedule {
     @Column(name = "trainer_id")
     private Long trainerId;
 
+    public void setTrainerId(Long trainerId) {
+        this.trainerId = trainerId;
+    }
 }
