@@ -1,6 +1,8 @@
 package com.bulkup.health.controller;
 
 import com.bulkup.health.config.CurrentUserParameter;
+import com.bulkup.health.config.exception.CustomException;
+import com.bulkup.health.config.exception.ErrorCode;
 import com.bulkup.health.dto.ScheduleDto;
 import com.bulkup.health.entity.account.Account;
 import com.bulkup.health.service.ScheduleService;
@@ -16,7 +18,14 @@ import java.util.List;
 @RequestMapping("/api/v1/schedule")
 public class ScheduleController {
     private final ScheduleService scheduleService;
+    @GetMapping("/trainer")
+    @Secured("ROLE_TRAINER")
+    public List<ScheduleDto.Response.Schedule>  getMyScheduleForTrainerMapping(@CurrentUserParameter Account account) {
+        if (account == null)
+            throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
 
+        return scheduleService.getTrainerSchedule(account.getId());
+    }
     @GetMapping("/trainer/{trainerId}")
     public List<ScheduleDto.Response.Schedule>  getTrainerScheduleMapping(@PathVariable Long trainerId) {
         return scheduleService.getTrainerSchedule(trainerId);
