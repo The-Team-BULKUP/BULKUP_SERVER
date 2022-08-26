@@ -2,6 +2,7 @@ package com.bulkup.health.entity.account;
 
 import com.bulkup.health.config.spring_security.SecurityRole;
 import com.bulkup.health.config.spring_security.SecurityRoleConverter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public abstract class Account {
     @Column(name = "username", nullable = false, length = 20)
     private String username;
 
+    @JsonIgnore
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
