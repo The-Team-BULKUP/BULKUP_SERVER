@@ -8,25 +8,63 @@ import lombok.Data;
 import lombok.Getter;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PartyDto {
     public static class Response {
+
+        @Getter
+        public static class GetMyPartyList {
+            private List<GetMyParty> myParty;
+            public GetMyPartyList() {
+                this.myParty = new ArrayList<>();
+            }
+            public void addList(GetMyParty myParty) {
+                this.myParty.add(myParty);
+            }
+        }
+
+
+        @Getter
+        @Builder
+        @AllArgsConstructor
+        public static class GetMyParty {
+            private Long id;
+            private String name;
+            private PartyMemberDto.Response.Trainer trainer;
+            private List<PartyMemberDto.Response.User> member;
+            private String description;
+            private String preferredDay;
+            private String preferredTime;
+            private Integer preferredHowMany;
+            private Long preferredPrice;
+            private Integer memberCount;
+            private String partyType;
+            private boolean hostByMe;
+        }
+
         @Getter
         @Builder
         @AllArgsConstructor
         public static class PartyInfo {
+            private Long id;
             private String name;
+            private String description;
             private AccountDto.Response.User leader;
             private Long trainerId;
             private Integer preferredHowMany;
             private String preferredDay;
             private String preferredTime;
             private Double distance;
-            private String discriminatorValue;
             private Point point;
             private Long preferredPrice;
+            private Double preferredDistance;
+            private String type;
+            private Integer memberCount;
         }
 
         @Getter
@@ -58,6 +96,9 @@ public class PartyDto {
             @NotNull(message = "크루 이름을 입력하세요.")
             private String name;
 
+            @NotBlank(message = "크루 설명을 입력하세요.")
+            private String description;
+
             @NotNull(message = "선호 가격을 입력하세요.")
             @Min(value = 0, message = "선호 가격은 0 이상이어야 합니다.")
             private Long preferredPrice;
@@ -87,6 +128,7 @@ public class PartyDto {
             public PartyAlone toPartyAlone(){
                 return PartyAlone.builder()
                         .name(name)
+                        .description(description)
                         .preferredPrice(preferredPrice)
                         .preferredHowMany(preferredHowMany)
                         .preferredDay(preferredDay)
@@ -100,6 +142,7 @@ public class PartyDto {
             public PartyCrew toPartyCrew(){
                 return PartyCrew.builder()
                         .name(name)
+                        .description(description)
                         .preferredPrice(preferredPrice)
                         .preferredHowMany(preferredHowMany)
                         .preferredDay(preferredDay)

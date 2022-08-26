@@ -31,6 +31,9 @@ public abstract class Party {
     @Column(name = "name", nullable = false, length = 30)
     private String name;
 
+    @Column(name = "description", nullable = false, length = 80)
+    private String description;
+
     @Column(name = "crew_leader_id", nullable = false, length = 45)
     private Long crewLeaderId;
 

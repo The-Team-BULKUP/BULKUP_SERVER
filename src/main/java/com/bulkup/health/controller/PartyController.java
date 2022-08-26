@@ -31,6 +31,12 @@ public class PartyController {
 
     @PutMapping("/{partyId}/")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void updatePartyMapping() {
+
+    }
+
+    @GetMapping("/{partyId}/join")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void joinParty(@CurrentUserParameter Account account, @PathVariable Long partyId) {
         partyService.joinParty(account, partyId);
     }
@@ -47,16 +53,20 @@ public class PartyController {
         return partyService.searchPartyCrew(account, request);
     }
 
-    @GetMapping("/")
-    public void getMyPartyListMapping() {
-
+    @GetMapping("/my/in")
+    public PartyDto.Response.GetMyPartyList getMyPartyInMapping(@CurrentUserParameter Account account) {
+        return partyService.getMyPartyIn(account);
     }
 
     @PutMapping("/{partyId}/trainer")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void updatePartyTrainerMapping(@CurrentUserParameter Account account, @PathVariable Long partyId) {
         partyService.registerPartyTrainer(account, partyId);
+    }
 
+    @GetMapping("/find")
+    public List<PartyDto.Response.PartyInfo> findTrainerMapping(@CurrentUserParameter Account account) {
+        return partyService.findPartyForTrainer(account);
     }
 
 }

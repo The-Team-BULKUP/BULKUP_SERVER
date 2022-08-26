@@ -1,8 +1,10 @@
 package com.bulkup.health.controller;
 
+import com.bulkup.health.dto.TrainerDto;
+import com.bulkup.health.service.TrainerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,13 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/trainer")
 public class TrainerController {
-    @GetMapping("/")
-    public String getTrainerInfo() {
-        return "Hello";
-    }
+    private final TrainerService trainerService;
 
-    @PostMapping("/")
-    public String modifyTrainerInfo() {
-        return "Hello";
+    @GetMapping("")
+    public TrainerDto.Response.TrainerList getTrainerListByPointMapping(@Validated TrainerDto.Request.TrainerSearch req) {
+        return trainerService.getTrainerListByPointMapping(req);
     }
 }
