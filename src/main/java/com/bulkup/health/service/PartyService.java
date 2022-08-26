@@ -17,6 +17,7 @@ import com.bulkup.health.repository.party.PartyAloneRepository;
 import com.bulkup.health.repository.party.PartyCrewRepository;
 import com.bulkup.health.repository.party.PartyMemberRepository;
 import com.bulkup.health.repository.party.PartyRepository;
+import com.bulkup.health.util.TelegramAlertUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -165,10 +166,19 @@ public class PartyService {
                 .ifPresent(partyMember -> {
                     throw new CustomException(ErrorCode.ALREADY_JOINED);
                 });
-        PartyMember partyMember = new PartyMember();
-        partyMember.setMemberId(account.getId());
-        partyMember.setPartyId(partyId);
-        partyMemberRepository.save(partyMember);
+
+        if (account.isUser()) {
+            PartyMember partyMember = new PartyMember();
+            partyMember.setMemberId(account.getId());
+            partyMember.setPartyId(partyId);
+            partyMemberRepository.save(partyMember);
+
+            TelegramAlertUtil.sendAlert("새로운 참가자가 파티에 참가했습니다.\n파티명: " + party.getName() + ", 파티 id값 : "
+                    + party.getId() + "참가자 id값 : " + account.getId());
+        }
+        else if (account.isTrainer())
+            TelegramAlertUtil.sendAlert("트레이너가 파티에 문의요청 했습니다.\n파티명: " + party.getName() + ", 파티 id값 : "
+                    + party.getId() +  "트레이너 id값 : " + account.getId());
     }
     @Transactional
     public void registerPartyTrainer(Account account, Long partyId){
