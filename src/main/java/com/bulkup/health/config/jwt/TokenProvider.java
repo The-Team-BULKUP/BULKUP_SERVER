@@ -23,6 +23,7 @@ import java.util.Optional;
 @Component
 @Slf4j
 public class TokenProvider implements InitializingBean {
+
     private final String secret;
     private final long tokenValidityInMilliseconds;
     public final long refreshTokenValidityInMilliseconds;

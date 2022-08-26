@@ -24,6 +24,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ScheduleService {
+
     private final PartyRepository partyRepository;
     private final PartyScheduleRepository partyScheduleRepository;
     private final PartyMemberRepository partyMemberRepository;

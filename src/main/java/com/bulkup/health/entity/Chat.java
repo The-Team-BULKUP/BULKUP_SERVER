@@ -1,7 +1,6 @@
 package com.bulkup.health.entity;
 
 import com.bulkup.health.entity.account.Account;
-import com.bulkup.health.entity.account.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +16,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Table(name = "Chat", schema = "bulkup")
 public class Chat {
+
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

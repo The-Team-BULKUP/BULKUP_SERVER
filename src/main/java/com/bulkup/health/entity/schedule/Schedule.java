@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
         columnDefinition = "VARCHAR(15)")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Schedule {
+
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

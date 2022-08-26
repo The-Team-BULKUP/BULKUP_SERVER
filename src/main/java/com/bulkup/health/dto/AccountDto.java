@@ -15,6 +15,7 @@ import javax.validation.constraints.*;
 import java.io.IOException;
 
 public class AccountDto {
+
     public static class Response {
 
         @Getter

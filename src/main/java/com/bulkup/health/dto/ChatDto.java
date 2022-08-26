@@ -1,15 +1,14 @@
 package com.bulkup.health.dto;
 
-import com.bulkup.health.entity.Chat;
 import com.bulkup.health.entity.ChatRoom;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 public class ChatDto {
+
     public static class Request {
         @Getter
         @AllArgsConstructor

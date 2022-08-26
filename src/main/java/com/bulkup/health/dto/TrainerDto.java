@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrainerDto {
+
     public static class Response {
+
         @Data
         public static class TrainerList {
+
             List<PartyMemberDto.Response.Trainer> trainerList;
 
             public TrainerList(List<PartyMemberDto.Response.Trainer> trainerList) {

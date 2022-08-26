@@ -1,6 +1,7 @@
 package com.bulkup.health.dto;
 
 public interface PartyInformation {
+
     Long getId();
     String getName();
     String getDescription();

@@ -14,6 +14,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 public class UserChatRoom {
+
     @Id
     @Column()
     @GeneratedValue(strategy = GenerationType.IDENTITY)

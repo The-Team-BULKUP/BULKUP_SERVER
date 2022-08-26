@@ -1,12 +1,10 @@
 package com.bulkup.health.config.exception;
 
 import org.springframework.http.HttpStatus;
-
 public enum ErrorCode {
     // Authentication
     AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED.value(), "A001", "자격증명에 실패했습니다."),
     ACCESS_DENIED(HttpStatus.FORBIDDEN.value(), "A002", "접근이 거부되었습니다."),
-
     // Common
     METHOD_NOT_ALLOWED(405, "C002", " method not allowed"),
     HANDLE_ACCESS_DENIED(403, "C003", "잘못된 접근입니다."),

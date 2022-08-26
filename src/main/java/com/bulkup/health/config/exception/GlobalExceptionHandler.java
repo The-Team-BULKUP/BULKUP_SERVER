@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.UnexpectedTypeException;
-
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -17,7 +16,6 @@ public class GlobalExceptionHandler {
         log.error("handleCustomException throw CustomException : {}", e.getErrorCode());
         return ErrorResponse.toResponseEntity(e.getErrorCode());
     }
-
     @ExceptionHandler(UnexpectedTypeException.class)
     protected ResponseEntity<ErrorResponse> handleUnexpectedTypeException(final UnexpectedTypeException e) {
         return ResponseEntity

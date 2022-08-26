@@ -1,6 +1,7 @@
 package com.bulkup.health.dto;
 
 public interface TrainerInformation {
+
     Long getId();
     String getUsername();
     String getRealName();

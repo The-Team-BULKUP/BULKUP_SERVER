@@ -26,12 +26,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PartyService {
+
     private final PartyCrewRepository partyCrewRepository;
     private final PartyAloneRepository partyAloneRepository;
     private final PartyRepository partyRepository;
@@ -159,7 +161,7 @@ public class PartyService {
             throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
         Party party = partyRepository.findById(partyId)
                 .orElseThrow(() -> new CustomException(ErrorCode.HANDLE_ACCESS_DENIED));
-        if (account.isUser() && !party.getDiscriminatorValue().equals("crew"))
+        if (account.isUser() && !Objects.equals(party.getDiscriminatorValue(), "crew"))
             throw new CustomException(ErrorCode.ONLY_ACCESS_CREW);
 
         partyMemberRepository.findByPartyIdAndAccountId(partyId, account.getId())

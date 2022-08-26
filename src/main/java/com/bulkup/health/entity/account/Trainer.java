@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @DiscriminatorValue("ROLE_TRAINER")
 public class Trainer extends Account {
+
     @Column(name = "price_per")
     private Integer pricePer;
 

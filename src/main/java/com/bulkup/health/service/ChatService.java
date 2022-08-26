@@ -1,10 +1,6 @@
 package com.bulkup.health.service;
 
-import com.bulkup.health.config.exception.CustomException;
-import com.bulkup.health.config.exception.ErrorCode;
-import com.bulkup.health.dto.BoardDto;
 import com.bulkup.health.dto.ChatDto;
-import com.bulkup.health.entity.Chat;
 import com.bulkup.health.entity.ChatRoom;
 import com.bulkup.health.entity.UserChatRoom;
 import com.bulkup.health.entity.account.Account;
@@ -18,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -26,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional()
 public class ChatService {
+
     private final ChatRepository chatRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final UserChatRoomRepository userChatRoomRepository;

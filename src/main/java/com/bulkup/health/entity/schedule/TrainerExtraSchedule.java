@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @DiscriminatorValue("trainer_extra")
 public class TrainerExtraSchedule extends Schedule {
+
     @Column(name = "trainer_id")
     private Long trainerId;
 

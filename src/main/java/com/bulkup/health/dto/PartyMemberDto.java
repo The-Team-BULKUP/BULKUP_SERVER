@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 public class PartyMemberDto {
+
     public static class Response {
         public static class User {
             private Long id;

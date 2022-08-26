@@ -17,8 +17,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @RequiredArgsConstructor
 @EnableRedisRepositories(basePackages="com.bulkup.health.repository.redis")
 public class RedisRepositoryConfig {
-    private final RedisProperties redisProperties;
 
+    private final RedisProperties redisProperties;
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         String host = redisProperties.getHost();

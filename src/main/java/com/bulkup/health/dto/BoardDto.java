@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class BoardDto {
+
     public static class Request {
         @Data
         public static class CreatePost {
