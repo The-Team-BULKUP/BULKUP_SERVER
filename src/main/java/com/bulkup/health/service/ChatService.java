@@ -33,7 +33,6 @@ public class ChatService {
 
     @Transactional()
     public void createRoom(ChatDto.Request.CreateRoom req) {
-        log.info(req.getTitle() + " " + req.getAccounts() + "hi");
         ChatRoom chatRoom = chatRoomRepository.save(req.toEntity());
         for (long id : req.getAccounts()) {
             Account a = accountRepository.findById(id).orElse(null);
@@ -51,12 +50,19 @@ public class ChatService {
     public ChatDto.Response.GetRoomsByAccount getRoomsByAccount(Account currentUser) {
         List<ChatRoom> roomList = new ArrayList<>();
         userChatRoomRepository.findByAccount(currentUser.getId()).ifPresent(rooms -> {
-            log.info(rooms.toString());
             for (UserChatRoom room : rooms) {
                 chatRoomRepository.findById(room.getRoom().getId()).ifPresent(roomList::add);
             }
         });
 
         return new ChatDto.Response.GetRoomsByAccount(roomList);
+    }
+
+    public void sendChatMessage() {
+
+    }
+
+    public void getChatMessage() {
+
     }
 }

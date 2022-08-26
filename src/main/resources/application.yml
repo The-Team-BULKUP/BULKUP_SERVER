@@ -1,5 +1,26 @@
 spring:
-#  mvc:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: jiheon.unidev@gmail.com
+    password: mjrntwxxusccbcuy
+    properties:
+      mail:
+        debug: true
+        smtp:
+          connectiontimeout: 5000
+          auth: true
+          starttls:
+            enable: true
+#          ssl:
+#            enable: false
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  #  mvc:
 #    favicon:
 #      enabled: false
   datasource:
@@ -18,7 +39,7 @@ spring:
   jpa:
     #database-platform: org.hibernate.dialect.MySQL5Dialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
 
 jwt:
