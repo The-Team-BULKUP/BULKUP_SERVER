@@ -12,6 +12,7 @@ import com.bulkup.health.repository.account.TrainerRepository;
 import com.bulkup.health.repository.account.UserRepository;
 import com.bulkup.health.repository.redis.TokenStorageRepository;
 import com.bulkup.health.util.RedisUtil;
+import com.bulkup.health.util.TelegramAlertUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -57,6 +58,9 @@ public class AccountService {
 
         // 회원 저장
         trainerRepository.save(req.toEntity());
+
+        TelegramAlertUtil.sendAlert("[트레이너 회원가입] "+ req.getRealName() + "님이 회원가입 하셨습니다.\n승인 부탁드립니다.");
+
     }
 
     @Transactional
