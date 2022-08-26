@@ -1,5 +1,6 @@
 package com.bulkup.health.entity.community;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,6 +39,7 @@ public class Comment {
     private LocalDateTime createAt;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "board_id", updatable = false, insertable = false)
     private Board post;
 }
