@@ -1,6 +1,8 @@
 package com.bulkup.health.controller;
 
+import com.bulkup.health.config.CurrentUserParameter;
 import com.bulkup.health.dto.AccountDto;
+import com.bulkup.health.entity.account.Account;
 import com.bulkup.health.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,11 @@ public class AccountController {
     @PostMapping("/login")
     public AccountDto.Response.Token loginMap(@Validated AccountDto.Request.Login req) {
         return accountService.login(req);
+    }
+
+    @GetMapping("/my")
+    public Account loginMap(@CurrentUserParameter Account account) {
+        return accountService.getMyInfo(account);
     }
 
     @PostMapping("/signup/trainer")

@@ -151,4 +151,12 @@ public class AccountService {
         redisUtil.insertTokenToStorage(username, tokenStorageEntity);
         return new AccountDto.Response.Token(newAccessToken, tokenExpired, newRefreshToken, userRole, account.getRealName());
     }
+
+    public Account getMyInfo(Account account) {
+        if (account == null)
+            throw new CustomException(ErrorCode.HANDLE_ACCESS_DENIED);
+
+        return accountRepository.findById(account.getId())
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    }
 }
