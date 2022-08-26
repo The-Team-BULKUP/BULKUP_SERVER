@@ -48,4 +48,11 @@ public class AccountController {
                                      HttpServletRequest request){
         return accountService.reissue(accessToken, refreshToken);
     }
+
+    @GetMapping("/account/me")
+    public Account getAccountInfo(@CurrentUserParameter Account account) {
+        // TODO: make custom exception if account is null
+        return account;
+    }
+
 }

@@ -4,6 +4,7 @@ import com.bulkup.health.config.spring_security.SecurityRole;
 import com.bulkup.health.config.spring_security.SecurityRoleConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -26,7 +27,7 @@ public abstract class Account {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username", nullable = false, length = 20)
+    @Column(name = "username", unique = true, nullable = false, length = 20)
     private String username;
 
     @JsonIgnore
@@ -36,7 +37,7 @@ public abstract class Account {
     @Column(name = "real_name", nullable = false, length = 10)
     private String realName;
 
-    @Column(name = "phone", nullable = false, length = 15)
+    @Column(name = "phone", unique = true, nullable = false, length = 15)
     private String phone;
 
 //    @JsonIgnore

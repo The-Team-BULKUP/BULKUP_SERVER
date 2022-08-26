@@ -62,6 +62,8 @@ public class AccountService {
     @Transactional
     public void signupUser(AccountDto.Request.SignupUSER req) {
         // 회원 중복 검사 (아이디, 핸드폰, 닉네임)
+        log.info("username is :" + req.getUsername());
+
         accountRepository.findByUsername(req.getUsername())
                 .ifPresent(m -> {
                     throw new CustomException(ErrorCode.USERNAME_DUPLICATION);

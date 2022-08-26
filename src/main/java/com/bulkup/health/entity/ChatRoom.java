@@ -8,28 +8,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
-//todo: 아직 미완
 @Getter
-@Entity
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Chat", schema = "bulkup")
-public class Chat {
+@NoArgsConstructor
+@Builder
+@Entity
+public class ChatRoom {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "account_id")
-    @ManyToOne
-    private Account sender;
-
-    @JoinColumn(name = "chat_room_id")
-    @ManyToOne
-    private ChatRoom chatRoom;
-
-    @Column(length = 100)
-    private String message;
+    @Column
+    private String title;
 }

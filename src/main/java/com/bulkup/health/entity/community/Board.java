@@ -1,6 +1,9 @@
 package com.bulkup.health.entity.community;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -12,6 +15,9 @@ import java.util.List;
 
 @Getter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "Board", schema = "bulkup")
 @EntityListeners(AuditingEntityListener.class)
 public class Board {
